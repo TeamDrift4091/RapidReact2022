@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -56,6 +57,51 @@ public class Drivetrain extends SubsystemBase {
   // This this how we will control the robot in most cases
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
+  }
+
+  /**
+   * Sets the left and right motors to a percent output
+   * @param leftPercent double
+   * @param rightPercent double
+   */
+  public void set(double leftPercent, double rightPercent){
+    frontLeft.set(leftPercent);
+    frontRight.set(rightPercent);
+  }
+
+  /**
+   * Sets the left and right motors to a specified control mode
+   * @param controlMode ControlMode
+   * @param leftMagnitude double
+   * @param rightMagnitude double
+   */
+  public void set(ControlMode controlMode, double leftMagnitude, double rightMagnitude) {
+    frontLeft.set(controlMode, leftMagnitude);
+    frontRight.set(controlMode, rightMagnitude);
+  }
+
+  /**
+   * Sets the encoder values back to zero
+   */
+  public void resetEncoders(){
+    frontLeft.setSelectedSensorPosition(0);
+    frontRight.setSelectedSensorPosition(0);
+  }
+
+  /**
+   * 
+   * @return double array of positions [left, right]
+   */
+  public double[] getPositions(){
+    return new double[] {frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition()};
+  }
+
+  /**
+   * 
+   * @return double array of velocities [left, right]
+   */
+  public double[] getVelocities() {
+    return new double[] {frontLeft.getSelectedSensorVelocity(), frontRight.getSelectedSensorVelocity()};
   }
 
   @Override
