@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.util.NavX;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -24,6 +25,8 @@ public class Drivetrain extends SubsystemBase {
   WPI_TalonFX middleRight;
   WPI_TalonFX backRight;
 
+  NavX gyro;
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     frontLeft = new WPI_TalonFX(Constants.FRONT_LEFT_PORT);
@@ -34,6 +37,8 @@ public class Drivetrain extends SubsystemBase {
     backRight = new WPI_TalonFX(Constants.BACK_RIGHT_PORT);
 
     differentialDrive = new DifferentialDrive(frontLeft, frontRight);
+
+    gyro = new NavX();
 
     middleLeft.follow(frontLeft);
     backLeft.follow(frontLeft);
@@ -102,6 +107,14 @@ public class Drivetrain extends SubsystemBase {
    */
   public double[] getVelocities() {
     return new double[] {frontLeft.getSelectedSensorVelocity(), frontRight.getSelectedSensorVelocity()};
+  }
+
+  public void resetGyro() {
+    gyro.reset();
+  }
+
+  public double getGyroAngle() {
+    return gyro.getAngle();
   }
 
   @Override

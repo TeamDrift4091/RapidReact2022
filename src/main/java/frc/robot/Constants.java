@@ -20,4 +20,7 @@ public final class Constants {
     public static int FRONT_RIGHT_PORT = 3;
     public static int MIDDLE_RIGHT_PORT = 4;
     public static int BACK_RIGHT_PORT = 5;
+
+    public static double WHEEL_DIAMETER = 6; // inches
+    public static double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI; // inches
 }
