@@ -54,7 +54,7 @@ public class AutonomousTrajectory extends CommandBase {
     // Pass config
     config);  
 
-    RamseteCommand ramseteCommand =
+    ramseteCommand =
         new RamseteCommand(
             trajectory,
            drivetrain::getPose,
