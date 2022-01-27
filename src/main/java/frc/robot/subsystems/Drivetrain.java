@@ -7,7 +7,16 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -23,6 +32,16 @@ public class Drivetrain extends SubsystemBase {
   WPI_TalonFX middleRight;
   WPI_TalonFX backRight;
 
+  Pose2d pose;
+
+  AHRS gyro = new AHRS();
+  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(137.5));
+  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
+
+  PIDController leftPidController = new PIDController(9.95, 0, 0);
+  PIDController rightPidController = new PIDController(9.95, 0, 0);
+  SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.268, 1.89, 0.243); //TODO: NEED TO UPDATE VALUES USING SOFTWARE
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     frontLeft = new WPI_TalonFX(Constants.FRONT_LEFT_PORT);
@@ -33,6 +52,9 @@ public class Drivetrain extends SubsystemBase {
     backRight = new WPI_TalonFX(Constants.BACK_RIGHT_PORT);
 
     differentialDrive = new DifferentialDrive(frontLeft, frontRight);
+    
+    //DifferentialDriveOdometry(kinematics, getHeading());
+
 
     middleLeft.follow(frontLeft);
     backLeft.follow(frontLeft);
@@ -53,6 +75,44 @@ public class Drivetrain extends SubsystemBase {
     frontRight.setNeutralMode(NeutralMode.Brake);
   }
 
+public SimpleMotorFeedforward getFeedforward(){
+  return feedforward;
+}
+
+public Pose2d getPose(){
+  return pose;
+}
+
+
+public Rotation2d getHeading(){
+  return Rotation2d.fromDegrees(-gyro.getAngle());
+}
+
+public PIDController getLeftPIDController(){
+  return leftPidController;
+}
+
+public PIDController getrightPIDController(){
+  return rightPidController;
+}
+
+public DifferentialDriveKinematics getKinematics(){
+  return kinematics;  
+}
+
+public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+  
+  return new DifferentialDriveWheelSpeeds(
+    frontLeft.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60,
+    frontRight.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60
+    );
+}
+
+public void setOutput(double leftVolts, double rightVolts){
+  frontLeft.set(leftVolts / 12);
+  frontRight.set(rightVolts / 12);
+}
+
   // This this how we will control the robot in most cases
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
@@ -61,5 +121,6 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    pose = odometry.update(getHeading(), frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition());
   }
 }
