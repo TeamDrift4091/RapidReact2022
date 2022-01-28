@@ -69,6 +69,11 @@ public class Drivetrain extends SubsystemBase {
 		frontLeft.config_kP(0, 0, Constants.TIMEOUT_MS);
 		frontLeft.config_kI(0, 0, Constants.TIMEOUT_MS);
 		frontLeft.config_kD(0, .2, Constants.TIMEOUT_MS);
+    frontRight.selectProfileSlot(0, 0);
+		frontRight.config_kF(0, .2, Constants.TIMEOUT_MS);
+		frontRight.config_kP(0, 0, Constants.TIMEOUT_MS);
+		frontRight.config_kI(0, 0, Constants.TIMEOUT_MS);
+		frontRight.config_kD(0, .2, Constants.TIMEOUT_MS);
     
     frontLeft.configMotionCruiseVelocity(3000, Constants.TIMEOUT_MS);
 		frontLeft.configMotionAcceleration(3000, Constants.TIMEOUT_MS);
@@ -89,6 +94,11 @@ public class Drivetrain extends SubsystemBase {
     frontLeft.set(controlMode, leftMagnitude);
     frontRight.set(controlMode, rightMagnitude);
     differentialDrive.feed();
+  }
+
+  public void resetEncoderPosition() {
+    frontLeft.setSelectedSensorPosition(0);
+    frontRight.setSelectedSensorPosition(0);
   }
 
   @Override
