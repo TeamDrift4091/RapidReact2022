@@ -13,11 +13,14 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static final int TIMEOUT_MS = 30;
+
     // Drivetrain Constants
-    public static int FRONT_LEFT_PORT = 1;
-    public static int MIDDLE_LEFT_PORT = 2;
-    public static int BACK_LEFT_PORT = 3;
-    public static int FRONT_RIGHT_PORT = 4;
-    public static int MIDDLE_RIGHT_PORT = 5;
-    public static int BACK_RIGHT_PORT = 6;
+    public static final int FRONT_LEFT_PORT = 1;
+    public static final int MIDDLE_LEFT_PORT = 2;
+    public static final int BACK_LEFT_PORT = 3;
+    public static final int FRONT_RIGHT_PORT = 4;
+    public static final int MIDDLE_RIGHT_PORT = 5;
+    public static final int BACK_RIGHT_PORT = 6;
 }
