@@ -52,9 +52,7 @@ public class Drivetrain extends SubsystemBase {
     backRight = new WPI_TalonFX(Constants.BACK_RIGHT_PORT);
 
     differentialDrive = new DifferentialDrive(frontLeft, frontRight);
-    
-    //DifferentialDriveOdometry(kinematics, getHeading());
-
+    differentialDrive.setSafetyEnabled(false);
 
     middleLeft.follow(frontLeft);
     backLeft.follow(frontLeft);
