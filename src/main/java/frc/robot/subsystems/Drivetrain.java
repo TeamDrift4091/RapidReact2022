@@ -35,7 +35,7 @@ public class Drivetrain extends SubsystemBase {
   Pose2d pose;
 
   AHRS gyro = new AHRS();
-  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(137.5));
+  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(21.875));
   DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
   PIDController leftPidController = new PIDController(9.95, 0, 0);
