@@ -20,4 +20,13 @@ public final class Constants {
     public static int FRONT_RIGHT_PORT = 4;
     public static int MIDDLE_RIGHT_PORT = 5;
     public static int BACK_RIGHT_PORT = 6;
+    
+    //Intake Constants
+    public static int INTAKE_PORT = 7;
+
+    public static int INTAKE_DOWN_RIGHT = 0;
+    public static int INTAKE_UP_RIGHT = 4;
+
+    public static int INTAKE_DOWN_LEFT = 1;
+    public static int INTAKE_UP_LEFT = 5;
 }
