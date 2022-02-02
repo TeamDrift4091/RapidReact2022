@@ -35,12 +35,12 @@ public class Drivetrain extends SubsystemBase {
   Pose2d pose;
 
   AHRS gyro = new AHRS();
-  DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(21.875));
-  DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
+  // DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(21.875));
+  // DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
-  PIDController leftPidController = new PIDController(9.95, 0, 0);
-  PIDController rightPidController = new PIDController(9.95, 0, 0);
-  SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.268, 1.89, 0.243); //TODO: NEED TO UPDATE VALUES USING SOFTWARE
+  // PIDController leftPidController = new PIDController(9.95, 0, 0);
+  // PIDController rightPidController = new PIDController(9.95, 0, 0);
+  // SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.268, 1.89, 0.243); //TODO: NEED TO UPDATE VALUES USING SOFTWARE
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -73,52 +73,58 @@ public class Drivetrain extends SubsystemBase {
     frontRight.setNeutralMode(NeutralMode.Brake);
   }
 
-public SimpleMotorFeedforward getFeedforward(){
-  return feedforward;
-}
+// public SimpleMotorFeedforward getFeedforward(){
+//   return feedforward;
+// }
 
-public Pose2d getPose(){
-  return pose;
-}
+// public Pose2d getPose(){
+//   return pose;
+// }
 
 
-public Rotation2d getHeading(){
-  return Rotation2d.fromDegrees(-gyro.getAngle());
-}
+  public Rotation2d getHeading(){
+    return Rotation2d.fromDegrees(-gyro.getAngle());
+  }
 
-public PIDController getLeftPIDController(){
-  return leftPidController;
-}
+// public PIDController getLeftPIDController(){
+//   return leftPidController;
+// }
 
-public PIDController getrightPIDController(){
-  return rightPidController;
-}
+// public PIDController getrightPIDController(){
+//   return rightPidController;
+// }
 
-public DifferentialDriveKinematics getKinematics(){
-  return kinematics;  
-}
+// public DifferentialDriveKinematics getKinematics(){
+//   return kinematics;  
+// }
 
-public DifferentialDriveWheelSpeeds getWheelSpeeds(){
+// public DifferentialDriveWheelSpeeds getWheelSpeeds(){
   
-  return new DifferentialDriveWheelSpeeds(
-    frontLeft.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60,
-    frontRight.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60
-    );
-}
+//   return new DifferentialDriveWheelSpeeds(
+//     frontLeft.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60,
+//     frontRight.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(3.0) / 60
+//     );
+// }
 
-public void setOutput(double leftVolts, double rightVolts){
-  frontLeft.set(leftVolts / 12);
-  frontRight.set(rightVolts / 12);
-}
+  public void setOutputByVoltage(double leftVolts, double rightVolts) {
+    System.out.println(leftVolts / 12.);
+    System.out.println(rightVolts / 12. + "\n");
+    frontLeft.set(leftVolts / 12.);
+    frontRight.set(rightVolts / 12.);
+  }
 
   // This this how we will control the robot in most cases
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
   }
 
+  public void resetGyro() {
+    gyro.reset();
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    pose = odometry.update(getHeading(), frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition());
+    // pose = odometry.update(getHeading(), frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition());
   }
 }
