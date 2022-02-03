@@ -20,4 +20,11 @@ public final class Constants {
     public static int FRONT_RIGHT_PORT = 4;
     public static int MIDDLE_RIGHT_PORT = 5;
     public static int BACK_RIGHT_PORT = 6;
+
+        // Encoder ticks per rotation of motor * gear ratio / diameter of wheel (ft)
+    public static double ENCODER_TICKS_PER_FOOT = 4096 * 7.6 / (Math.PI * .5);
+
+    // TODO: Find actual values
+    public static double MAX_SPEED = 5; // meters per second;
+    public static double MAX_ANGULAR_VELOCITY = 1; // radians per second;
 }

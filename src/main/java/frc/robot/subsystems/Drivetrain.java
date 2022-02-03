@@ -23,18 +23,19 @@ import frc.robot.Constants;
 
 public class Drivetrain extends SubsystemBase {
 
-  DifferentialDrive differentialDrive;
+  private DifferentialDrive differentialDrive;
 
-  WPI_TalonFX frontLeft;
-  WPI_TalonFX middleLeft;
-  WPI_TalonFX backLeft;
-  WPI_TalonFX frontRight;
-  WPI_TalonFX middleRight;
-  WPI_TalonFX backRight;
+  private WPI_TalonFX frontLeft;
+  private WPI_TalonFX middleLeft;
+  private WPI_TalonFX backLeft;
+  private WPI_TalonFX frontRight;
+  private WPI_TalonFX middleRight;
+  private WPI_TalonFX backRight;
 
-  Pose2d pose;
+  private AHRS gyro = new AHRS();
 
-  AHRS gyro = new AHRS();
+  private final DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(gyro.getRotation2d());
+
   // DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(21.875));
   // DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
@@ -73,18 +74,30 @@ public class Drivetrain extends SubsystemBase {
     frontRight.setNeutralMode(NeutralMode.Brake);
   }
 
-// public SimpleMotorFeedforward getFeedforward(){
-//   return feedforward;
-// }
-
-// public Pose2d getPose(){
-//   return pose;
-// }
-
-
-  public Rotation2d getHeading(){
-    return Rotation2d.fromDegrees(-gyro.getAngle());
+  public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
+    differentialDrive.arcadeDrive(speed, rotation, squareInputs);
   }
+
+  public Pose2d getPose(){
+    return odometry.getPoseMeters();
+  }
+
+  public void resetOdometry() {
+    odometry.resetPosition(new Pose2d(0,0, Rotation2d.fromDegrees(0)), gyro.getRotation2d());
+  }
+
+  public void updateOdometry() {
+    Rotation2d rotation2d = gyro.getRotation2d();
+
+    double leftDistance = frontLeft.getSelectedSensorPosition() / Constants.ENCODER_TICKS_PER_FOOT;
+    double rightDistance = frontRight.getSelectedSensorPosition() / Constants.ENCODER_TICKS_PER_FOOT;
+
+    odometry.update(rotation2d, leftDistance, rightDistance);
+  }
+
+  // public Rotation2d getHeading(){
+  //   return Rotation2d.fromDegrees(-gyro.getAngle());
+  // }
 
 // public PIDController getLeftPIDController(){
 //   return leftPidController;
@@ -113,11 +126,6 @@ public class Drivetrain extends SubsystemBase {
     frontRight.set(rightVolts / 12.);
   }
 
-  // This this how we will control the robot in most cases
-  public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
-    differentialDrive.arcadeDrive(speed, rotation, squareInputs);
-  }
-
   public void resetGyro() {
     gyro.reset();
   }
@@ -126,5 +134,6 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     // pose = odometry.update(getHeading(), frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition());
+    updateOdometry();
   }
 }
