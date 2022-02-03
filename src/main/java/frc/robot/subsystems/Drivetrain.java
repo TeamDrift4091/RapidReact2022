@@ -84,7 +84,7 @@ public class Drivetrain extends SubsystemBase {
 
   public void resetOdometry() {
     resetEncoders();
-    odometry.resetPosition(new Pose2d(0,0, Rotation2d.fromDegrees(0)), gyro.getRotation2d());
+    odometry.resetPosition(new Pose2d(0,0, gyro.getRotation2d()), gyro.getRotation2d());
   }
 
   public void updateOdometry() {
@@ -125,11 +125,15 @@ public class Drivetrain extends SubsystemBase {
 //     );
 // }
 
-  public void setOutputByVoltage(double leftVolts, double rightVolts) {
-    System.out.println(leftVolts / 12.);
-    System.out.println(rightVolts / 12. + "\n");
-    frontLeft.set(leftVolts / 12.);
-    frontRight.set(rightVolts / 12.);
+  // public void setOutputByVoltage(double leftVolts, double rightVolts) {
+  //   System.out.println(leftVolts / 12.);
+  //   System.out.println(rightVolts / 12. + "\n");
+  //   frontLeft.set(leftVolts / 12.);
+  //   frontRight.set(rightVolts / 12.);
+  // }
+
+  public double getGyroAngle() {
+    return gyro.getAngle();
   }
 
   public void resetGyro() {

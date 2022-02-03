@@ -85,6 +85,8 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
 
     drivetrain.arcadeDrive(normalized_ramsete_speed, normalized_ramsete_rotation, false);
 
+
+
     var t_pose = reference.poseMeters;
     var t_x = t_pose.getX();
     var t_y = t_pose.getY();
@@ -105,6 +107,8 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
     SmartDashboard.putNumber("Pose X - Actual", a_x);
     SmartDashboard.putNumber("Pose Y - Actual", a_y);
     SmartDashboard.putNumber("Pose R - Actual", a_rotation);
+
+    SmartDashboard.putNumber("Raw Gyro Angle", drivetrain.getGyroAngle());
   }
 
   // Called once the command ends or is interrupted.
