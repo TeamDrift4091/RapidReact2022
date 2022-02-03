@@ -83,6 +83,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void resetOdometry() {
+    resetEncoders();
     odometry.resetPosition(new Pose2d(0,0, Rotation2d.fromDegrees(0)), gyro.getRotation2d());
   }
 
@@ -93,6 +94,11 @@ public class Drivetrain extends SubsystemBase {
     double rightDistance = frontRight.getSelectedSensorPosition() / Constants.ENCODER_TICKS_PER_FOOT;
 
     odometry.update(rotation2d, leftDistance, rightDistance);
+  }
+
+  public void resetEncoders() {
+    frontLeft.setSelectedSensorPosition(0);
+    frontRight.setSelectedSensorPosition(0);
   }
 
   // public Rotation2d getHeading(){
