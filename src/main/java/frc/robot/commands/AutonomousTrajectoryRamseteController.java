@@ -55,7 +55,7 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
       new Pose2d(0,0, Rotation2d.fromDegrees(0)),
       List.of(
       ),
-      new Pose2d(4,0, Rotation2d.fromDegrees(0)),
+      new Pose2d(1,0, Rotation2d.fromDegrees(0)),
       // *********
       
       new TrajectoryConfig(
@@ -81,7 +81,7 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
     ChassisSpeeds speeds = ramseteController.calculate(drivetrain.getPose(), reference);
 
     var normalized_ramsete_speed = speeds.vxMetersPerSecond / Constants.MAX_SPEED;
-    var normalized_ramsete_rotation = speeds.omegaRadiansPerSecond / Constants.MAX_ANGULAR_VELOCITY;
+    var normalized_ramsete_rotation = -speeds.omegaRadiansPerSecond / Constants.MAX_ANGULAR_VELOCITY;
 
     drivetrain.arcadeDrive(normalized_ramsete_speed, normalized_ramsete_rotation, false);
 
