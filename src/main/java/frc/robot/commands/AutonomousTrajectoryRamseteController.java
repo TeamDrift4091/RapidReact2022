@@ -54,6 +54,7 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
       // *********
       new Pose2d(0,0, Rotation2d.fromDegrees(0)),
       List.of(
+        new Translation2d(.5,.5)
       ),
       new Pose2d(1,0, Rotation2d.fromDegrees(0)),
       // *********
