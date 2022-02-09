@@ -9,15 +9,12 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -41,7 +38,7 @@ public class Drivetrain extends SubsystemBase {
 
   // PIDController leftPidController = new PIDController(9.95, 0, 0);
   // PIDController rightPidController = new PIDController(9.95, 0, 0);
-  // SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.268, 1.89, 0.243); //TODO: NEED TO UPDATE VALUES USING SOFTWARE
+  // SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(0.268, 1.89, 0.243); // NEED TO UPDATE VALUES USING SOFTWARE
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -145,5 +142,17 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     // pose = odometry.update(getHeading(), frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition());
     updateOdometry();
+
+    SmartDashboard.putNumber("RPM (frontLeft)", frontLeft.getSelectedSensorVelocity()*600/4096.);
+    SmartDashboard.putNumber("RPM (frontRight)", frontRight.getSelectedSensorVelocity()*600/4096.);
+    if (SmartDashboard.getNumber("RPM (Average)", 0) < (frontLeft.getSelectedSensorVelocity()+frontRight.getSelectedSensorVelocity())*600/4096./2.) {
+      SmartDashboard.putNumber("RPM (Average)", (frontLeft.getSelectedSensorVelocity()+frontRight.getSelectedSensorVelocity())*600/4096./2.);
+    }
+    SmartDashboard.putNumber("MPS (frontLeft)", Units.feetToMeters(((frontLeft.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)));
+    SmartDashboard.putNumber("MPS (frontRight)", Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)));
+    SmartDashboard.putNumber("MPS (Average)", (Units.feetToMeters(((frontLeft.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)) +
+      Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)))/2.);
+
+    SmartDashboard.putNumber("Encoder Ticks (frontLeft)", frontLeft.getSelectedSensorPosition());
   }
 }

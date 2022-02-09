@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.math.controller.RamseteController;
@@ -54,9 +53,9 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
       // *********
       new Pose2d(0,0, Rotation2d.fromDegrees(0)),
       List.of(
-        new Translation2d(.5,.5)
+        new Translation2d(1.5,.5)
       ),
-      new Pose2d(1,0, Rotation2d.fromDegrees(0)),
+      new Pose2d(3,0, Rotation2d.fromDegrees(0)),
       // *********
       
       new TrajectoryConfig(
@@ -64,7 +63,7 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
         Units.feetToMeters(2)
       ).setKinematics(
         new DifferentialDriveKinematics(
-          Units.inchesToMeters(21.875)
+          Constants.WHEEL_BASE_WIDTH
         )
       )
     );
