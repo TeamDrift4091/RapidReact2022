@@ -23,8 +23,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 
   // The robot's controllers...
+  // the joystick will control the drivetrain and shooter subsystems
   private static Joystick joystick = new Joystick(0);
-  private static JoystickButton button2 = new JoystickButton(joystick, 2);
+  // the controller will control the intake and climber
+  private static XboxController controller = new XboxController(1);
+
+  // The robot's buttons...
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
