@@ -34,6 +34,7 @@ public class Drivetrain extends SubsystemBase {
     backRight = new WPI_TalonFX(Constants.BACK_RIGHT_PORT);
 
     differentialDrive = new DifferentialDrive(frontLeft, frontRight);
+    differentialDrive.setSafetyEnabled(false);
 
     middleLeft.follow(frontLeft);
     backLeft.follow(frontLeft);
@@ -76,13 +77,12 @@ public class Drivetrain extends SubsystemBase {
 		frontRight.config_kD(0, .2, Constants.TIMEOUT_MS);
     
     frontLeft.configMotionCruiseVelocity(3000, Constants.TIMEOUT_MS);
-		frontLeft.configMotionAcceleration(3000, Constants.TIMEOUT_MS);
+		frontLeft.configMotionAcceleration(2000, Constants.TIMEOUT_MS);
     frontRight.configMotionCruiseVelocity(3000, Constants.TIMEOUT_MS);
-		frontRight.configMotionAcceleration(3000, Constants.TIMEOUT_MS);
+		frontRight.configMotionAcceleration(2000, Constants.TIMEOUT_MS);
 
     frontLeft.setSelectedSensorPosition(0, 0, Constants.TIMEOUT_MS);
 		frontRight.setSelectedSensorPosition(0, 0, Constants.TIMEOUT_MS);
-
   }
 
   // This this how we will control the robot in most cases
@@ -93,12 +93,16 @@ public class Drivetrain extends SubsystemBase {
   public void set(ControlMode controlMode, double leftMagnitude, double rightMagnitude) {
     frontLeft.set(controlMode, leftMagnitude);
     frontRight.set(controlMode, rightMagnitude);
-    differentialDrive.feed();
   }
 
   public void resetEncoderPosition() {
     frontLeft.setSelectedSensorPosition(0);
     frontRight.setSelectedSensorPosition(0);
+  }
+
+  
+  public double[] getEncoderPositions() {
+    return new double[] {frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition()};
   }
 
   @Override

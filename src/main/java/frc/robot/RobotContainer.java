@@ -55,6 +55,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new MotionMagicSequence(drivetrain, 12);
+    return new MotionMagicSequence(drivetrain, 30);
   }
 }

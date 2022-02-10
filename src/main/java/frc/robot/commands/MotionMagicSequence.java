@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -15,6 +16,6 @@ public class MotionMagicSequence extends SequentialCommandGroup {
   public MotionMagicSequence(Drivetrain drivetrain, double distance) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
-    addCommands(new MotionMagicAuto(drivetrain, distance), new MotionMagicAuto(drivetrain, -distance));
+    addCommands(new MotionMagicAuto(drivetrain, distance), new WaitCommand(1), new MotionMagicAuto(drivetrain, -distance));
   }
 }

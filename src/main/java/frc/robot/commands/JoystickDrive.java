@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class JoystickDrive extends CommandBase {
@@ -40,7 +41,7 @@ public class JoystickDrive extends CommandBase {
     double updatedX = joyX.getAsDouble();
     // drivetrain.arcadeDrive(updatedY, updatedX, true);
     System.out.println("JoyY: " + updatedY);
-    drivetrain.set(ControlMode.MotionMagic, updatedY*4096*2, updatedY*4096*2);
+    drivetrain.set(ControlMode.MotionMagic, updatedY* Constants.TICKS_PER_REVOLUTION*2, updatedY* Constants.TICKS_PER_REVOLUTION*2);
   }
 
   // Called once the command ends or is interrupted.

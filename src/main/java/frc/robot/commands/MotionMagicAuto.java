@@ -7,19 +7,21 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class MotionMagicAuto extends CommandBase {
   private Drivetrain drivetrain;
 
   private double distance;
+  private double allowedError = 4 * Constants.TICKS_PER_REVOLUTION / (Math.PI * 6); // encoder ticks
 
   /** Creates a new MotionMagicAuto. */
   public MotionMagicAuto(Drivetrain drivetrain, double distance) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
-    this.distance = distance * 4096 / (Math.PI * 6);
+    this.distance = distance * Constants.TICKS_PER_REVOLUTION / (Math.PI * 6);
   }
 
   // Called when the command is initially scheduled.
@@ -36,11 +38,15 @@ public class MotionMagicAuto extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    drivetrain.arcadeDrive(0, 0, false);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double[] positions = drivetrain.getEncoderPositions();
+
+    return Math.abs(positions[0] - distance) <= allowedError && Math.abs(positions[1] - distance) <= allowedError;
   }
 }

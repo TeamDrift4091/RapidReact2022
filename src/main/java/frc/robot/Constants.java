@@ -23,4 +23,5 @@ public final class Constants {
     public static final int FRONT_RIGHT_PORT = 4;
     public static final int MIDDLE_RIGHT_PORT = 5;
     public static final int BACK_RIGHT_PORT = 6;
+    public static final int TICKS_PER_REVOLUTION = 4096;
 }
