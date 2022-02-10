@@ -29,6 +29,7 @@ public class RobotContainer {
   private static XboxController controller = new XboxController(1);
 
   // The robot's buttons...
+  private static JoystickButton controllerButton2 = new JoystickButton(controller, 2); // Button 'B'
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
@@ -54,7 +55,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    button2.whileHeld(new IntakeCommand(intake));
+    // Button 'B'
+    controllerButton2.whileHeld(new IntakeCommand(intake));
   }
 
   /**
