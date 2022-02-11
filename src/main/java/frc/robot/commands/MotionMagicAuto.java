@@ -4,28 +4,24 @@
 
 package frc.robot.commands;
 
-import java.util.function.DoubleSupplier;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class JoystickDrive extends CommandBase {
-
+public class MotionMagicAuto extends CommandBase {
   private Drivetrain drivetrain;
 
-  private DoubleSupplier joyY;
-  private DoubleSupplier joyX;
+  private double distance;
+  private double allowedError = 4 * Constants.TICKS_PER_REVOLUTION / (Math.PI * 6); // encoder ticks
 
-  /** Creates a new JoystickDrive. */
-  public JoystickDrive(Drivetrain drivetrain, DoubleSupplier joyY, DoubleSupplier joyX) {
+  /** Creates a new MotionMagicAuto. */
+  public MotionMagicAuto(Drivetrain drivetrain, double distance) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
-    this.joyY = joyY;
-    this.joyX = joyX;
+    this.distance = distance * Constants.TICKS_PER_REVOLUTION / (Math.PI * 6);
   }
 
   // Called when the command is initially scheduled.
@@ -37,22 +33,20 @@ public class JoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double updatedY = joyY.getAsDouble();
-    double updatedX = joyX.getAsDouble();
-    // drivetrain.arcadeDrive(updatedY, updatedX, true);
-    System.out.println("JoyY: " + updatedY);
-    drivetrain.set(ControlMode.MotionMagic, updatedY* Constants.TICKS_PER_REVOLUTION*2, updatedY* Constants.TICKS_PER_REVOLUTION*2);
+    drivetrain.set(ControlMode.MotionMagic, distance, distance);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drivetrain.arcadeDrive(0, 0, true);
+    drivetrain.arcadeDrive(0, 0, false);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    double[] positions = drivetrain.getEncoderPositions();
+
+    return Math.abs(positions[0] - distance) <= allowedError && Math.abs(positions[1] - distance) <= allowedError;
   }
 }

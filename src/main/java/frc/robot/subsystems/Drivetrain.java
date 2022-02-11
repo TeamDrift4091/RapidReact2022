@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -69,6 +70,36 @@ public class Drivetrain extends SubsystemBase {
 
     frontLeft.setNeutralMode(NeutralMode.Brake);
     frontRight.setNeutralMode(NeutralMode.Brake);
+
+    // Motion Magic
+    frontLeft.configNominalOutputForward(0, Constants.TIMEOUT_MS);
+		frontLeft.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
+    frontRight.configNominalOutputForward(0, Constants.TIMEOUT_MS);
+		frontRight.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
+
+    frontLeft.configPeakOutputForward(1, Constants.TIMEOUT_MS);
+		frontLeft.configPeakOutputReverse(-1, Constants.TIMEOUT_MS);
+    frontRight.configPeakOutputForward(1, Constants.TIMEOUT_MS);
+		frontRight.configPeakOutputReverse(-1, Constants.TIMEOUT_MS);
+
+    frontLeft.selectProfileSlot(0, 0);
+		frontLeft.config_kF(0, .2, Constants.TIMEOUT_MS);
+		frontLeft.config_kP(0, 0, Constants.TIMEOUT_MS);
+		frontLeft.config_kI(0, 0, Constants.TIMEOUT_MS);
+		frontLeft.config_kD(0, .2, Constants.TIMEOUT_MS);
+    frontRight.selectProfileSlot(0, 0);
+		frontRight.config_kF(0, .2, Constants.TIMEOUT_MS);
+		frontRight.config_kP(0, 0, Constants.TIMEOUT_MS);
+		frontRight.config_kI(0, 0, Constants.TIMEOUT_MS);
+		frontRight.config_kD(0, .2, Constants.TIMEOUT_MS);
+    
+    frontLeft.configMotionCruiseVelocity(3000, Constants.TIMEOUT_MS);
+		frontLeft.configMotionAcceleration(2000, Constants.TIMEOUT_MS);
+    frontRight.configMotionCruiseVelocity(3000, Constants.TIMEOUT_MS);
+		frontRight.configMotionAcceleration(2000, Constants.TIMEOUT_MS);
+
+    frontLeft.setSelectedSensorPosition(0, 0, Constants.TIMEOUT_MS);
+		frontRight.setSelectedSensorPosition(0, 0, Constants.TIMEOUT_MS);
   }
 
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
@@ -96,6 +127,11 @@ public class Drivetrain extends SubsystemBase {
   public void resetEncoders() {
     frontLeft.setSelectedSensorPosition(0);
     frontRight.setSelectedSensorPosition(0);
+  }
+
+  public void set(ControlMode controlMode, double leftMagnitude, double rightMagnitude) {
+    frontLeft.set(controlMode, leftMagnitude);
+    frontRight.set(controlMode, rightMagnitude);
   }
 
   // public Rotation2d getHeading(){
@@ -136,6 +172,10 @@ public class Drivetrain extends SubsystemBase {
   public void resetGyro() {
     gyro.reset();
   }
+  
+  public double[] getEncoderPositions() {
+    return new double[] {frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition()};
+  }
 
   @Override
   public void periodic() {
@@ -151,7 +191,7 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("MPS (frontLeft)", Units.feetToMeters(((frontLeft.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)));
     SmartDashboard.putNumber("MPS (frontRight)", Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)));
     SmartDashboard.putNumber("MPS (Average)", (Units.feetToMeters(((frontLeft.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)) +
-      Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)))/2.);
+                                              Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)))/2.);
 
     SmartDashboard.putNumber("Encoder Ticks (frontLeft)", frontLeft.getSelectedSensorPosition());
   }

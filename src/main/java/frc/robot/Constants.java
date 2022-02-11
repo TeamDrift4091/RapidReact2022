@@ -15,6 +15,9 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static final int TIMEOUT_MS = 30;
+
     // Drivetrain Constants
     public static int FRONT_LEFT_PORT = 1;
     public static int MIDDLE_LEFT_PORT = 2;
@@ -26,8 +29,10 @@ public final class Constants {
     public static double WHEEL_BASE_WIDTH_INCHES = 21.875; // inches
     public static double WHEEL_BASE_WIDTH = Units.inchesToMeters(WHEEL_BASE_WIDTH_INCHES); // meters
 
+    public static int TICKS_PER_REVOLUTION = 4096;
+
         // Encoder ticks per rotation of motor * gear ratio / diameter of wheel (ft)
-    public static double ENCODER_TICKS_PER_FOOT = 4096 * 7.6 / (Math.PI * .5); // feet
+    public static double ENCODER_TICKS_PER_FOOT = TICKS_PER_REVOLUTION * 7.6 / (Math.PI * .5); // feet
     public static double ENCODER_TICKS_PER_METER = Units.feetToMeters(ENCODER_TICKS_PER_FOOT); // meters
 
         // Rotations per second * gear ratio / diameter of wheel
