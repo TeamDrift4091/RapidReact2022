@@ -8,11 +8,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-// import frc.robot.commands.AutonomousTrajectory;
-import frc.robot.commands.AutonomousTrajectoryRamseteController;
-import frc.robot.commands.JoystickDrive;
-import frc.robot.commands.MotionMagicAuto;
-import frc.robot.commands.MotionMagicSequence;
+import frc.robot.commands.autonomous.Autonomous1Ball;
+import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -63,6 +60,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return;
+    return new Autonomous1Ball(drivetrain);
   }
 }

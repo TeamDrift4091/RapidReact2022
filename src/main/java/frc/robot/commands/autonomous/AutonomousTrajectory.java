@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.autonomous;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class AutonomousTrajectoryRamseteController extends CommandBase {
+public class AutonomousTrajectory extends CommandBase {
 
   private Drivetrain drivetrain;
   private Trajectory trajectory;
@@ -32,43 +32,22 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
   private final RamseteController ramseteController = new RamseteController();
 
   /** Creates a new AutonomousTrajectoryRamseteController. */
-  public AutonomousTrajectoryRamseteController(Drivetrain drivetrain) {
+  public AutonomousTrajectory(Drivetrain drivetrain, Trajectory trajectory) {
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;    
+
+    this.trajectory = trajectory;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("Starting Autonomous...");
     drivetrain.resetGyro();
     drivetrain.resetOdometry();
     timer.reset();
     timer.start();
 
     ramseteController.setEnabled(true);
-
-    trajectory = TrajectoryGenerator.generateTrajectory(
-      // Configure path here
-      // *********
-      new Pose2d(0,0, Rotation2d.fromDegrees(0)),
-      List.of(
-        new Translation2d(1.5,.5)
-      ),
-      new Pose2d(3,0, Rotation2d.fromDegrees(0)),
-      // *********
-      
-      new TrajectoryConfig(
-        Units.feetToMeters(2),
-        Units.feetToMeters(2)
-      ).setKinematics(
-        new DifferentialDriveKinematics(
-          Constants.WHEEL_BASE_WIDTH
-        )
-      )
-    );
-
-    System.out.println(trajectory.getTotalTimeSeconds());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -113,9 +92,7 @@ public class AutonomousTrajectoryRamseteController extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    System.out.println("Autonomous Complete.");
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

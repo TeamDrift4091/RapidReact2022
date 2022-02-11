@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.autonomous;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -10,14 +10,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
-public class MotionMagicAuto extends CommandBase {
+public class AutonomousMotionMagic extends CommandBase {
   private Drivetrain drivetrain;
 
   private double distance;
   private double allowedError = 4 * Constants.TICKS_PER_REVOLUTION / (Math.PI * 6); // encoder ticks
 
   /** Creates a new MotionMagicAuto. */
-  public MotionMagicAuto(Drivetrain drivetrain, double distance) {
+  public AutonomousMotionMagic(Drivetrain drivetrain, double distance) {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
@@ -27,7 +27,7 @@ public class MotionMagicAuto extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.resetEncoderPosition();
+    drivetrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -2,14 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.drivetrain;
 
 import java.util.function.DoubleSupplier;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
 
 public class JoystickDrive extends CommandBase {
@@ -31,7 +28,7 @@ public class JoystickDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    drivetrain.resetEncoderPosition();
+    drivetrain.resetEncoders();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,9 +36,7 @@ public class JoystickDrive extends CommandBase {
   public void execute() {
     double updatedY = joyY.getAsDouble();
     double updatedX = joyX.getAsDouble();
-    // drivetrain.arcadeDrive(updatedY, updatedX, true);
-    System.out.println("JoyY: " + updatedY);
-    drivetrain.set(ControlMode.MotionMagic, updatedY* Constants.TICKS_PER_REVOLUTION*2, updatedY* Constants.TICKS_PER_REVOLUTION*2);
+    drivetrain.arcadeDrive(updatedY, updatedX, true);
   }
 
   // Called once the command ends or is interrupted.
