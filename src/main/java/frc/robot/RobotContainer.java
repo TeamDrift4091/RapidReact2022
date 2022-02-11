@@ -29,6 +29,8 @@ public class RobotContainer {
   private static XboxController controller = new XboxController(1);
 
   // The robot's buttons...
+  private static JoystickButton joystickButton1 = new JoystickButton(joystick, 1); // Trigger
+
   private static JoystickButton controllerButton2 = new JoystickButton(controller, 2); // Button 'B'
 
   // The robot's subsystems and commands are defined here...
@@ -46,6 +48,13 @@ public class RobotContainer {
       () -> joystick.getY() * -1, // -Y is forward on the joystick
       () -> joystick.getX()
     ));
+
+    intake.setDefaultCommand(new IntakeCommand(
+      intake,
+      // () -> (controller.getLeftTriggerAxis() + controller.getRightTriggerAxis() > 1.1) // default position of either trigger is .5
+      // ** OR **
+      () -> (joystickButton1.get())
+    ));
   }
 
   /**
@@ -54,10 +63,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
-    // Button 'B'
-    controllerButton2.whileHeld(new IntakeCommand(intake));
-  }
+  private void configureButtonBindings() {}
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
