@@ -15,12 +15,10 @@ package frc.robot;
 public final class Constants {
     // Drivetrain Constants
     public static int FRONT_LEFT_PORT = 1;
-    public static int MIDDLE_LEFT_PORT = 2;
-    public static int BACK_LEFT_PORT = 3;
-    public static int FRONT_RIGHT_PORT = 4;
-    public static int MIDDLE_RIGHT_PORT = 5;
-    public static int BACK_RIGHT_PORT = 6;
-    
+    public static int BACK_LEFT_PORT = 2;
+    public static int FRONT_RIGHT_PORT = 3;
+    public static int BACK_RIGHT_PORT = 4;
+
     //Intake Constants
     public static int INTAKE_PORT = 7;
 
