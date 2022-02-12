@@ -35,9 +35,9 @@ public class Autonomous1Ball extends SequentialCommandGroup {
           // Field coords from bottom left
           new Pose2d(0,0, Rotation2d.fromDegrees(0)), // Field coords: (31.5, 9) -45
           List.of(
-            new Translation2d(9.848, 1.736)
+            new Translation2d(2.3, -1.5)
           ),
-          new Pose2d(15.203, 9.546, Rotation2d.fromDegrees(0)), // Field coords: (49, 5) -45
+          new Pose2d(5, -2.5, Rotation2d.fromDegrees(0)), // Field coords: (49, 5) -45
           // *********
           new TrajectoryConfig(
             Units.feetToMeters(2),
