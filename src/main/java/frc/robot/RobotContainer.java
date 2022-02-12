@@ -12,6 +12,7 @@ import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.Autonomous1Ball;
 import frc.robot.commands.autonomous.AutonomousTrajectory;
+import frc.robot.commands.drivetrain.BallTracking;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -51,7 +52,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    button1.whenHeld(new BallTracking(drivetrain));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
