@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.autonomous.Autonomous1Ball;
+import frc.robot.commands.autonomous.AutonomousTrajectory;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
