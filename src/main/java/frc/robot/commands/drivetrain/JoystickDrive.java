@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.drivetrain;
 
 import java.util.function.DoubleSupplier;
 
@@ -27,7 +27,9 @@ public class JoystickDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    drivetrain.resetEncoders();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
