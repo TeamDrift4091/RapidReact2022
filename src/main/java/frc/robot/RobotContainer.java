@@ -36,7 +36,7 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> joystick.getY() * -1, // -Y is forward on the joystick
-      () -> joystick.getX()
+      () -> joystick.getX() * .75 // Decrease the sensitivity
     ));
   }
 
