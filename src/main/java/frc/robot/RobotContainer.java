@@ -4,15 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.TableListener;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.Autonomous1Ball;
-import frc.robot.commands.autonomous.AutonomousTrajectory;
-import frc.robot.commands.drivetrain.BallTracking;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -24,7 +29,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-
   // The robot's controllers...
   private static Joystick joystick = new Joystick(0);
 
@@ -33,10 +37,14 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
 
+  private SendableChooser<Integer> colorChooser = new SendableChooser<>();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    // Initialize the SmartDashboard choosers
+    initializeChoosers();
     DriverStation.silenceJoystickConnectionWarning(true);
 
     drivetrain.setDefaultCommand(new JoystickDrive(
@@ -52,9 +60,7 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {
-    button1.whenHeld(new BallTracking(drivetrain));
-  }
+  private void configureButtonBindings() {  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -63,5 +69,19 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new Autonomous1Ball(drivetrain);
+  }
+
+  /**
+   * Anything controlled through the dashboard can be initialized here.
+   */
+  private void initializeChoosers() {
+    // colorChooser
+    colorChooser.setDefaultOption("Red", 0);
+    colorChooser.addOption("Blue", 1);
+    
+    SmartDashboard.putData("Color", colorChooser);
+    NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener((event) -> {
+      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(colorChooser.getSelected()); 
+    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
   }
 }
