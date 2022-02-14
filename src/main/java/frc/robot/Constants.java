@@ -29,4 +29,12 @@ public final class Constants {
 
     public static int INTAKE_DOWN_LEFT = 1;
     public static int INTAKE_UP_LEFT = 5;
+
+    //Climber Constants
+    public static int WINCH_MOTOR = 8;
+
+    //xBox Constants
+    public static int MOVE_WINCH_BUTTON = 4; 
 }
+
+

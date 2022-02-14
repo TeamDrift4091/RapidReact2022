@@ -7,8 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Climb;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,12 +26,15 @@ public class RobotContainer {
 
   // The robot's controllers...
   private static Joystick joystick = new Joystick(0);
+  private static XboxController controller = new XboxController(1);
   private static JoystickButton button2 = new JoystickButton(joystick, 2);
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
 
   private final Intake intake = new Intake();
+
+  private final Climber climber = new Climber();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -41,6 +46,11 @@ public class RobotContainer {
       () -> joystick.getY() * -1, // -Y is forward on the joystick
       () -> joystick.getX()
     ));
+
+    climber.setDefaultCommand(new Climb(
+      climber,
+      () -> controller.getLeftY() * -1
+    ));
   }
 
   /**
@@ -51,6 +61,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     button2.whileHeld(new IntakeCommand(intake));
+
   }
 
   /**
