@@ -22,9 +22,6 @@ public final class Constants {
     //Intake Constants
     public static int INTAKE_PORT = 5;
 
-    public static int INTAKE_DOWN_RIGHT = 0;
-    public static int INTAKE_UP_RIGHT = 7;
-
-    public static int INTAKE_DOWN_LEFT = 1;
-    public static int INTAKE_UP_LEFT = 6;
+    public static int INTAKE_SOLENOID_DOWN = 7;
+    public static int INTAKE_SOLENOID_UP = 0;
 }

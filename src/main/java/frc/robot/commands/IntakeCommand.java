@@ -40,14 +40,15 @@ public class IntakeCommand extends CommandBase {
   public void execute() {
     double forward = forwardThrottle.getAsDouble();
     double reverse = reverseThrottle.getAsDouble();
-    double activeThrottle = forward > reverse ? forward : reverse;
-    int activeDirection = forward > reverse ? -1 : 1;
+    double activeThrottle = forward >= reverse ? forward : reverse;
+    int activeDirection = forward >= reverse ? -1 : 1;
     
     if (activeThrottle > .05) {
       // initialize
       if (!isAlreadyActive) {
         intake.lowerIntakeArm();
         timer.start();
+        isAlreadyActive = true;
       }
       // execute
       if(timer.hasElapsed(1)){
@@ -57,6 +58,8 @@ public class IntakeCommand extends CommandBase {
     } else {
       intake.raiseIntakeArm();
       intake.setIntakeSpeed(0);
+      timer.reset();
+      timer.stop();
   
       isAlreadyActive = false;
     }
