@@ -4,10 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.JoystickDrive;
+import frc.robot.commands.autonomous.Autonomous1Ball;
+import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -32,6 +34,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    DriverStation.silenceJoystickConnectionWarning(true);
 
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
@@ -54,7 +57,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return null;
+    return new Autonomous1Ball(drivetrain);
   }
 }

@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -13,6 +15,9 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+    public static final int TIMEOUT_MS = 30;
+
     // Drivetrain Constants
     public static int FRONT_LEFT_PORT = 1;
     public static int MIDDLE_LEFT_PORT = 2;
@@ -20,4 +25,19 @@ public final class Constants {
     public static int FRONT_RIGHT_PORT = 4;
     public static int MIDDLE_RIGHT_PORT = 5;
     public static int BACK_RIGHT_PORT = 6;
+
+    public static double WHEEL_BASE_WIDTH_INCHES = 21.875; // inches
+    public static double WHEEL_BASE_WIDTH = Units.inchesToMeters(WHEEL_BASE_WIDTH_INCHES); // meters
+
+    public static int TICKS_PER_REVOLUTION = 4096;
+
+        // Encoder ticks per rotation of motor * gear ratio / diameter of wheel (ft)
+    public static double ENCODER_TICKS_PER_FOOT = TICKS_PER_REVOLUTION * 7.6 / (Math.PI * .5); // feet
+    public static double ENCODER_TICKS_PER_METER = Units.feetToMeters(ENCODER_TICKS_PER_FOOT); // meters
+
+        // Rotations per second * gear ratio / diameter of wheel
+    public static double MAX_SPEED_FEET_PER_SECOND = ((6380/60.)/7.6)/(.5*Math.PI); // feet per second;
+    public static double MAX_SPEED = Units.feetToMeters(MAX_SPEED_FEET_PER_SECOND); // meters per second
+        // Tangential velocity / radius
+    public static double MAX_ANGULAR_VELOCITY = MAX_SPEED/(WHEEL_BASE_WIDTH/2.); // radians per second;
 }
