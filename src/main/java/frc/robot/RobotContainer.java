@@ -51,9 +51,11 @@ public class RobotContainer {
 
     intake.setDefaultCommand(new IntakeCommand(
       intake,
-      // () -> (controller.getLeftTriggerAxis() + controller.getRightTriggerAxis() > 1.1) // default position of either trigger is .5
+      () -> controller.getRightTriggerAxis(),
+      () -> controller.getLeftTriggerAxis()
+      // () -> (controller.getLeftTriggerAxis() + controller.getRightTriggerAxis() > .1) // default position of either trigger is 0
       // ** OR **
-      () -> (joystickButton1.get())
+      // () -> (joystickButton1.get())
     ));
   }
 
