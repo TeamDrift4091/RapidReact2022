@@ -7,9 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,6 +22,11 @@ import edu.wpi.first.wpilibj2.command.Command;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  private enum DriveMode {
+    TANK_DRIVE,
+    ARCADE_DRIVE
+  }
+  private SendableChooser<DriveMode> driveModeChooser = new SendableChooser<>();
 
   // The robot's controllers...
   // the joystick will control the drivetrain and shooter subsystems
@@ -33,11 +42,30 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    drivetrain.setDefaultCommand(new JoystickDrive(
-      drivetrain,
-      () -> joystick.getY() * -1, // -Y is forward on the joystick
-      () -> joystick.getX() * .75 // Decrease the sensitivity
-    ));
+    // drivetrain.setDefaultCommand(new JoystickDrive(
+    //   drivetrain,
+    //   () -> joystick.getY() * -1, // -Y is forward on t he joystick
+    //   () -> joystick.getX() * .75 // Decrease the sensitivity
+    // ));
+
+    // StringBuilder stringBuilder = new StringBuilder(">>>");
+    // stringBuilder.append(drivetrain).append(joystick.getX()).append(joystick.getY()).append(controller.getLeftY()).append(controller.getRightY()).append(driveModeChooser.getSelected());
+    // System.out.println(stringBuilder);
+
+    drivetrain.setDefaultCommand(
+      new ConditionalCommand(
+        new JoystickDrive(
+          drivetrain,
+          () -> joystick.getY(),
+          () -> joystick.getX()
+        ), new TankDrive(
+          drivetrain,
+          () -> controller.getLeftY(),
+          () -> controller.getRightY()
+        ),
+        () -> driveModeChooser.getSelected() == DriveMode.ARCADE_DRIVE
+      )
+    );
   }
 
   /**
@@ -46,7 +74,11 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    driveModeChooser.setDefaultOption("Tank Drive", DriveMode.TANK_DRIVE);
+    driveModeChooser.addOption("Arcade Drive", DriveMode.ARCADE_DRIVE);
+    SmartDashboard.putData(driveModeChooser);
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

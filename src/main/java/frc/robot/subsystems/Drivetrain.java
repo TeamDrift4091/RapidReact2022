@@ -59,6 +59,10 @@ public class Drivetrain extends SubsystemBase {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
   }
 
+  public void tankDrive(double left, double right) {
+    differentialDrive.tankDrive(left, right);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
