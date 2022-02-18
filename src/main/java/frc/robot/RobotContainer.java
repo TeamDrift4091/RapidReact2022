@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.lang.reflect.Field;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -52,6 +54,15 @@ public class RobotContainer {
     // stringBuilder.append(drivetrain).append(joystick.getX()).append(joystick.getY()).append(controller.getLeftY()).append(controller.getRightY()).append(driveModeChooser.getSelected());
     // System.out.println(stringBuilder);
 
+
+    // Class conditionalCommandClass;
+    // try {
+    //   conditionalCommandClass = Class.forName("edu.wpi.first.wpilibj2.command.ConditionalCommand");
+    //   conditionalCommandClass.getDeclaredField("m_selectedCommand").setAccessible(true);
+    // } catch (ClassNotFoundException | NoSuchFieldException | SecurityException e) {
+    //   System.out.println("Lol.\n\n");
+    //   e.printStackTrace();
+    // }
     drivetrain.setDefaultCommand(
       new ConditionalCommand(
         new JoystickDrive(
@@ -64,7 +75,23 @@ public class RobotContainer {
           () -> controller.getRightY()
         ),
         () -> driveModeChooser.getSelected() == DriveMode.ARCADE_DRIVE
-      )
+      ) {
+        @Override
+        public boolean isFinished() {
+          try {
+            Class conditionalCommandClass = Class.forName("edu.wpi.first.wpilibj2.command.ConditionalCommand");
+            Field selectedCommand = conditionalCommandClass.getDeclaredField("m_selectedCommand");
+            selectedCommand.setAccessible(true);
+            Command command = (Command) selectedCommand.get(this);
+            if (command != null) {
+              return super.isFinished();
+            }
+          } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+          }
+          return false;
+        };
+      }
     );
   }
 
@@ -77,7 +104,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driveModeChooser.setDefaultOption("Tank Drive", DriveMode.TANK_DRIVE);
     driveModeChooser.addOption("Arcade Drive", DriveMode.ARCADE_DRIVE);
-    SmartDashboard.putData(driveModeChooser);
+    SmartDashboard.putData("Drive Mode", driveModeChooser);
   }
 
   /**
