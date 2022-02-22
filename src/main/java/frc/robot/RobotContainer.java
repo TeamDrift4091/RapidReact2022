@@ -4,14 +4,20 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb;
+import frc.robot.commands.IndexShooterCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.IndexShooter;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -28,18 +34,26 @@ public class RobotContainer {
   private static Joystick joystick = new Joystick(0);
   private static XboxController controller = new XboxController(1);
   private static JoystickButton button2 = new JoystickButton(joystick, 2);
+  private static JoystickButton button1 = new JoystickButton(joystick, 1);
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
+
+  private final IndexShooter indexShooter = new IndexShooter();
 
   private final Intake intake = new Intake();
 
   private final Climber climber = new Climber();
 
+  private SendableChooser<Integer> colorChooser = new SendableChooser<>();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    // Initialize the SmartDashboard choosers
+    initializeChoosers();
 
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
@@ -51,6 +65,8 @@ public class RobotContainer {
       climber,
       () -> controller.getLeftY() * -1
     ));
+
+    indexShooter.setDefaultCommand(new IndexShooterCommand(indexShooter, () -> button1.get()));
   }
 
   /**
@@ -73,4 +89,19 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     return null;
   }
+
+  /**
+   * Anything controlled through the dashboard can be initialized here.
+   */
+  private void initializeChoosers() {
+    // colorChooser
+    colorChooser.setDefaultOption("Red", 0);
+    colorChooser.addOption("Blue", 1);
+    
+    SmartDashboard.putData("Color", colorChooser);
+    NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener(
+      (event) -> {indexShooter.setColor(colorChooser.getSelected());
+      }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
+  }
+
 }

@@ -35,6 +35,11 @@ public final class Constants {
 
     //xBox Constants
     public static int MOVE_WINCH_BUTTON = 4; 
+
+    //Index
+    public static int TOP_INDEX_MOTOR = 0;
+    public static int MIDDLE_INDEX_MOTOR = 1;
+    public static int BOTTOM_INDEX_MOTOR = 0;
 }
 
 
