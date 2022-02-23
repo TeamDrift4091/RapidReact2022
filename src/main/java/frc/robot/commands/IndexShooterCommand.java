@@ -31,9 +31,10 @@ public class IndexShooterCommand extends CommandBase {
 
   /**
    * Moves a ball from the lower slot to the upper slot.
+   * @param speed value between -1 and 1 representing speed at which motors will spin.
    */
-  public void advanceBall(){
-    indexShooter.setBottomIndexSpeed(0.5);
+  public void advanceBall(double speed) {
+    indexShooter.setBottomIndexSpeed(speed);
   }
 
   // Called when the command is initially scheduled.
@@ -47,10 +48,14 @@ public class IndexShooterCommand extends CommandBase {
       shootBall(0.7);
     } else if (indexShooter.isWrongColor()){
       shootBall(0.3);
+    } else {
+      shootBall(0);
     }
 
     if(indexShooter.isUpperSlotEmpty()){
-      advanceBall();
+      advanceBall(.5);
+    } else {
+      advanceBall(0);
     }
 
   }
