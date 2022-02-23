@@ -20,21 +20,20 @@ public class IndexShooterCommand extends CommandBase {
     addRequirements(indexShooter);
   }
 
-  public boolean isUpperSlotEmpty(){
-    return indexShooter.getRangeInches() > 2 && indexShooter.getColorMatch() == null;
-  }
-
+  /**
+   * Shoots a ball in the top slot.
+   * @param speed value between -1 and 1 representing speed at which motors will spin.
+   */
   public void shootBall(double speed){
     indexShooter.setTopIndexSpeed(speed);
     indexShooter.setMiddleIndexSpeed(speed);
   }
 
+  /**
+   * Moves a ball from the lower slot to the upper slot.
+   */
   public void advanceBall(){
     indexShooter.setBottomIndexSpeed(0.5);
-  }
-
-  public boolean isWrongColor(){
-    return indexShooter.getColorMatch() != indexShooter.teamColor && indexShooter.getColorMatch() != null;
   }
 
   // Called when the command is initially scheduled.
@@ -46,11 +45,11 @@ public class IndexShooterCommand extends CommandBase {
   public void execute() {
     if(isTriggerPressed.getAsBoolean()){
       shootBall(0.7);
-    } else if (isWrongColor()){
+    } else if (indexShooter.isWrongColor()){
       shootBall(0.3);
     }
 
-    if(isUpperSlotEmpty()){
+    if(indexShooter.isUpperSlotEmpty()){
       advanceBall();
     }
 

@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class IndexShooter extends SubsystemBase {
-  /** Creates a new IndexShooter. */
-
   //MOTORS
   private WPI_TalonFX topMotor = new WPI_TalonFX(Constants.TOP_INDEX_MOTOR);
   private WPI_TalonFX middleMotor = new WPI_TalonFX(Constants.MIDDLE_INDEX_MOTOR);
@@ -44,10 +42,18 @@ public class IndexShooter extends SubsystemBase {
     //colorMatcher.setConfidenceThreshold(.95);
   }
 
+  /**
+   * Sets the team color of the robot for the color sensor to compare to
+   * @param color 0 - blue : 1 - red
+   */
   public void setColor(int color){
     teamColor = color == 1 ? blue : red;
   }
 
+  /**
+   * Returns the Color detected by the color sensor.
+   * @return Color (red, blue, or null)
+   */
   public Color getColorMatch(){
     
     Color detectedColor = colorSensor.getColor();
@@ -56,18 +62,50 @@ public class IndexShooter extends SubsystemBase {
     return match.color;
   }
 
+  /**
+   * Returns a boolean depending on if the color of the ball detected is not the same as the robot team color.
+   * @return boolean representing if the ball is the same color as the team
+   */
+  public boolean isWrongColor(){
+    return getColorMatch() != teamColor && getColorMatch() != null;
+  }
+
+  /**
+   * Returns a boolean determining if there is a ball in the top slot.
+   * @return boolean representing if there is a ball in the top slot
+   */
+  public boolean isUpperSlotEmpty(){
+    return getRangeInches() > 2 && getColorMatch() == null;
+  }
+
+  /**
+   * Sets the speed of the top index motor
+   * @param speed percent output from -1 to 1
+   */
   public void setTopIndexSpeed(double speed){
     topMotor.set(speed);
   }
 
+  /**
+   * Sets the speed of the middle index motor
+   * @param speed percent output from -1 to 1
+   */
   public void setMiddleIndexSpeed(double speed){
     middleMotor.set(speed);
   }
 
+  /**
+   * Sets the speed of the bottom index motor
+   * @param speed percent output from -1 to 1
+   */
   public void setBottomIndexSpeed(double speed){
     bottomMotor.set(speed);
   }
 
+  /**
+   * Returns the distance detected by the ultrasonic sensor in inches.  Used to detect ball in bottom slot.
+   * @return ultrasonic sensor distance
+   */
   public double getRangeInches(){
     return ultrasonic.getRangeInches();
   }

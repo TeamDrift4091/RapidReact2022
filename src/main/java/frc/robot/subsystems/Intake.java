@@ -29,15 +29,25 @@ public class Intake extends SubsystemBase {
     
   }
 
+  /**
+   * Sets the speed of the intake motor.
+   * @param speed value between -1 and 1 
+   */
   public void setIntakeSpeed(double speed){
     intakeMotor.set(speed);
   }
 
+  /**
+   * Raises the intake arm to be within the starting bounds of the robot.
+   */
   public void raiseIntakeArm() {
     leftSolenoid.set(Value.kForward);
     rightSolenoid.set(Value.kForward);
   }
 
+  /**
+   * Lowers the intake arm to pick up balls.
+   */
   public void lowerIntakeArm() {
     // System.out.println("LowerIntakeArm is called");
     leftSolenoid.set(Value.kReverse);

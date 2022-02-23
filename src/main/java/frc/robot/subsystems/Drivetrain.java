@@ -54,7 +54,14 @@ public class Drivetrain extends SubsystemBase {
     frontRight.setNeutralMode(NeutralMode.Brake);
   }
 
-  // This this how we will control the robot in most cases
+  /**
+   * Arcade drive method using differential drive.
+   *
+   * @param speed The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+   * @param rotation The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
+   *     positive.
+   * @param squareInputs If set, decreases the input sensitivity at low speeds.
+   */
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
   }

@@ -4,10 +4,8 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -19,6 +17,10 @@ public class Climber extends SubsystemBase {
   public Climber() {
   }
 
+  /**
+   * Sets the speed of the winch motor.
+   * @param speed value between -1 and 1 representing the speed of the motor
+   */
   public void moveWinch(double speed){
     winchMotor.set(speed);
   }
