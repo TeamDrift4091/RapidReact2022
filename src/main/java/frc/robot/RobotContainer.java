@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -51,6 +52,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+    DriverStation.silenceJoystickConnectionWarning(true);
 
     // Initialize the SmartDashboard choosers
     initializeChoosers();
@@ -99,8 +102,9 @@ public class RobotContainer {
     colorChooser.addOption("Blue", 1);
     
     SmartDashboard.putData("Color", colorChooser);
-    NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener(
-      (event) -> {indexShooter.setColor(colorChooser.getSelected());
+    NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener((event) -> {
+        indexShooter.setColor(colorChooser.getSelected());
+        System.out.println("Hello there.");
       }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
   }
 

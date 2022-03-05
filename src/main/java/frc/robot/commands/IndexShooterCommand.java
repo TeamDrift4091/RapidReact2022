@@ -46,7 +46,7 @@ public class IndexShooterCommand extends CommandBase {
   public void execute() {
     if(isTriggerPressed.getAsBoolean()){
       shootBall(0.7);
-    } else if (indexShooter.isWrongColor()){
+    } else if (indexShooter.isCorrectColor()){
       shootBall(0.3);
     } else {
       shootBall(0);

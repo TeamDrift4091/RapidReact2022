@@ -11,9 +11,12 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class IndexShooter extends SubsystemBase {
@@ -35,18 +38,20 @@ public class IndexShooter extends SubsystemBase {
   Ultrasonic ultrasonic = new Ultrasonic(1, 2);
 
   public IndexShooter() {
-    red = new Color(1, 1, 1);
-    blue = new Color(1, 1, 1);
+    // TODO: Tune color values
+    red = new Color(1, .5, .5);
+    blue = new Color(.5, .5, 1);
     colorMatcher.addColorMatch(red);
     colorMatcher.addColorMatch(blue);
-    //colorMatcher.setConfidenceThreshold(.95);
+    colorMatcher.setConfidenceThreshold(.75); // Default .95
   }
 
   /**
    * Sets the team color of the robot for the color sensor to compare to
    * @param color 0 - blue : 1 - red
    */
-  public void setColor(int color){
+  public void setColor(int color) {
+    System.out.println("Hello.");
     teamColor = color == 1 ? blue : red;
   }
 
@@ -66,8 +71,8 @@ public class IndexShooter extends SubsystemBase {
    * Returns a boolean depending on if the color of the ball detected is not the same as the robot team color.
    * @return boolean representing if the ball is the same color as the team
    */
-  public boolean isWrongColor(){
-    return getColorMatch() != teamColor && getColorMatch() != null;
+  public boolean isCorrectColor(){
+    return getColorMatch().equals(teamColor);
   }
 
   /**
@@ -113,5 +118,9 @@ public class IndexShooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-  }
+    SmartDashboard.putNumber("Red", colorSensor.getRed());
+    SmartDashboard.putNumber("Green", colorSensor.getGreen());
+    SmartDashboard.putNumber("Blue", colorSensor.getBlue());
+    SmartDashboard.putBoolean("Boolean - Correct Color", isCorrectColor());
+    SmartDashboard.putString("Closest Color", colorMatcher.matchClosestColor(colorSensor.getColor()).color.equals(red) ? "Red" : "Blue");  }
 }
