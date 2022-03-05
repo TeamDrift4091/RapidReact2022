@@ -18,24 +18,21 @@ public final class Constants {
     public static int BACK_LEFT_PORT = 2;
     public static int FRONT_RIGHT_PORT = 3;
     public static int BACK_RIGHT_PORT = 4;
-
+    
     // Intake Constants
     public static int INTAKE_PORT = 5;
 
     // Climber Constants
-    public static int WINCH_MOTOR = 8;
+    public static int WINCH_MOTOR = 7;
 
-    // xBox Constants
-    public static int MOVE_WINCH_BUTTON = 4; 
-
-    // Index
-    public static int TOP_INDEX_MOTOR = 0;
-    public static int MIDDLE_INDEX_MOTOR = 1;
-    public static int BOTTOM_INDEX_MOTOR = 0;
+    // Index and Shooter Constants
+    public static int MIDDLE_INDEX_MOTOR = 8;
+    public static int BOTTOM_INDEX_MOTOR = 9;
+    public static int TOP_INDEX_MOTOR = 10;
 
     // Pneumatic Constants
-    public static int INTAKE_SOLENOID_DOWN = 7;
-    public static int INTAKE_SOLENOID_UP = 0;
+    public static int INTAKE_SOLENOID_DOWN = 0;
+    public static int INTAKE_SOLENOID_UP = 7;
 }
 
 

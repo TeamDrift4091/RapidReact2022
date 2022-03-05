@@ -11,11 +11,9 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 
@@ -38,7 +36,6 @@ public class IndexShooter extends SubsystemBase {
   Ultrasonic ultrasonic = new Ultrasonic(1, 2);
 
   public IndexShooter() {
-    // TODO: Tune color values
     red = new Color(1, .5, .5);
     blue = new Color(.5, .5, 1);
     colorMatcher.addColorMatch(red);
@@ -51,7 +48,6 @@ public class IndexShooter extends SubsystemBase {
    * @param color 0 - blue : 1 - red
    */
   public void setColor(int color) {
-    System.out.println("Hello.");
     teamColor = color == 1 ? blue : red;
   }
 
@@ -117,7 +113,8 @@ public class IndexShooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    teamColor = NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").getString("null").equals("red") ? red : blue;
+
     SmartDashboard.putNumber("Red", colorSensor.getRed());
     SmartDashboard.putNumber("Green", colorSensor.getGreen());
     SmartDashboard.putNumber("Blue", colorSensor.getBlue());

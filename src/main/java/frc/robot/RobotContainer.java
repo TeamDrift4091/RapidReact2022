@@ -56,7 +56,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    DriverStation.silenceJoystickConnectionWarning(true);
+    // DriverStation.silenceJoystickConnectionWarning(true);
 
     // Initialize the SmartDashboard choosers
     initializeChoosers();
@@ -110,10 +110,9 @@ public class RobotContainer {
     colorChooser.addOption("Blue", 1);
     
     SmartDashboard.putData("Color", colorChooser);
-    NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener((event) -> {
-        indexShooter.setColor(colorChooser.getSelected());
-        System.out.println("Hello there.");
-      }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
+    // NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener((event) -> {
+    //     indexShooter.setColor(colorChooser.getSelected());
+    // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
   }
 
 }

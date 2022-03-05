@@ -35,6 +35,7 @@ public class JoystickDrive extends CommandBase {
     double updatedY = joyY.getAsDouble();
     double updatedX = joyX.getAsDouble();
     drivetrain.arcadeDrive(updatedY, updatedX, true);
+    System.out.println("Ho ho ho");
   }
 
   // Called once the command ends or is interrupted.
