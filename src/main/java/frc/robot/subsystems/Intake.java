@@ -17,15 +17,13 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
 
-  private DoubleSolenoid leftSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_DOWN_LEFT, Constants.INTAKE_UP_LEFT);
-  private DoubleSolenoid rightSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_DOWN_RIGHT, Constants.INTAKE_UP_RIGHT);
+  private DoubleSolenoid solenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_SOLENOID_DOWN, Constants.INTAKE_SOLENOID_UP);
   private WPI_TalonFX intakeMotor = new WPI_TalonFX(Constants.INTAKE_PORT);
 
 
   public Intake() {
     intakeMotor.setNeutralMode(NeutralMode.Brake);
-    leftSolenoid.set(Value.kReverse);
-    rightSolenoid.set(Value.kReverse);
+    solenoid.set(Value.kReverse);
     
   }
 
@@ -41,17 +39,14 @@ public class Intake extends SubsystemBase {
    * Raises the intake arm to be within the starting bounds of the robot.
    */
   public void raiseIntakeArm() {
-    leftSolenoid.set(Value.kForward);
-    rightSolenoid.set(Value.kForward);
+    solenoid.set(Value.kForward);
   }
 
   /**
    * Lowers the intake arm to pick up balls.
    */
   public void lowerIntakeArm() {
-    // System.out.println("LowerIntakeArm is called");
-    leftSolenoid.set(Value.kReverse);
-    rightSolenoid.set(Value.kReverse);
+    solenoid.set(Value.kReverse);
   }
 
   @Override

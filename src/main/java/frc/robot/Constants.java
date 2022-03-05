@@ -15,31 +15,27 @@ package frc.robot;
 public final class Constants {
     // Drivetrain Constants
     public static int FRONT_LEFT_PORT = 1;
-    public static int MIDDLE_LEFT_PORT = 2;
-    public static int BACK_LEFT_PORT = 3;
-    public static int FRONT_RIGHT_PORT = 4;
-    public static int MIDDLE_RIGHT_PORT = 5;
-    public static int BACK_RIGHT_PORT = 6;
-    
-    //Intake Constants
-    public static int INTAKE_PORT = 7;
+    public static int BACK_LEFT_PORT = 2;
+    public static int FRONT_RIGHT_PORT = 3;
+    public static int BACK_RIGHT_PORT = 4;
 
-    public static int INTAKE_DOWN_RIGHT = 0;
-    public static int INTAKE_UP_RIGHT = 4;
+    // Intake Constants
+    public static int INTAKE_PORT = 5;
 
-    public static int INTAKE_DOWN_LEFT = 1;
-    public static int INTAKE_UP_LEFT = 5;
-
-    //Climber Constants
+    // Climber Constants
     public static int WINCH_MOTOR = 8;
 
-    //xBox Constants
+    // xBox Constants
     public static int MOVE_WINCH_BUTTON = 4; 
 
-    //Index
+    // Index
     public static int TOP_INDEX_MOTOR = 0;
     public static int MIDDLE_INDEX_MOTOR = 1;
     public static int BOTTOM_INDEX_MOTOR = 0;
+
+    // Pneumatic Constants
+    public static int INTAKE_SOLENOID_DOWN = 7;
+    public static int INTAKE_SOLENOID_UP = 0;
 }
 
 

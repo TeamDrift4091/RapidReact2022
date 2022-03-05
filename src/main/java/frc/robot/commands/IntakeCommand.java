@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Intake;
@@ -14,34 +16,58 @@ public class IntakeCommand extends CommandBase {
   Intake intake;
   Timer timer;
 
-  public IntakeCommand(Intake intake) {
+  boolean isAlreadyActive;
+  DoubleSupplier forwardThrottle;
+  DoubleSupplier reverseThrottle;
+
+  public IntakeCommand(Intake intake, DoubleSupplier forwardThrottle, DoubleSupplier reverseThrottle) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.intake = intake;
     addRequirements(intake);
     timer = new Timer();
+
+    this.isAlreadyActive = false;
+    this.forwardThrottle = forwardThrottle;
+    this.reverseThrottle = reverseThrottle;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    intake.lowerIntakeArm();
-    timer.start();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(timer.hasElapsed(1)){
-      intake.setIntakeSpeed(0.5);
+    double forward = forwardThrottle.getAsDouble();
+    double reverse = reverseThrottle.getAsDouble();
+    double activeThrottle = forward >= reverse ? forward : reverse;
+    int activeDirection = forward >= reverse ? -1 : 1;
+    
+    if (activeThrottle > .05) {
+      // initialize
+      if (!isAlreadyActive) {
+        intake.lowerIntakeArm();
+        timer.start();
+        isAlreadyActive = true;
+      }
+      // execute
+      if(timer.hasElapsed(1)){
+        intake.setIntakeSpeed(0.65 * activeDirection);
+      }
+    // end
+    } else {
+      intake.raiseIntakeArm();
+      intake.setIntakeSpeed(0);
+      timer.reset();
+      timer.stop();
+  
+      isAlreadyActive = false;
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    intake.raiseIntakeArm();
-    intake.setIntakeSpeed(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

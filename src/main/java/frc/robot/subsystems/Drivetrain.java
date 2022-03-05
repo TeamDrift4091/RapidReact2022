@@ -17,34 +17,26 @@ public class Drivetrain extends SubsystemBase {
   DifferentialDrive differentialDrive;
 
   WPI_TalonFX frontLeft;
-  WPI_TalonFX middleLeft;
   WPI_TalonFX backLeft;
   WPI_TalonFX frontRight;
-  WPI_TalonFX middleRight;
   WPI_TalonFX backRight;
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     frontLeft = new WPI_TalonFX(Constants.FRONT_LEFT_PORT);
-    middleLeft = new WPI_TalonFX(Constants.MIDDLE_LEFT_PORT);
     backLeft = new WPI_TalonFX(Constants.BACK_LEFT_PORT);
     frontRight = new WPI_TalonFX(Constants.FRONT_RIGHT_PORT);
-    middleRight = new WPI_TalonFX(Constants.MIDDLE_RIGHT_PORT);
     backRight = new WPI_TalonFX(Constants.BACK_RIGHT_PORT);
 
     differentialDrive = new DifferentialDrive(frontLeft, frontRight);
     differentialDrive.setSafetyEnabled(false);
 
-    middleLeft.follow(frontLeft);
     backLeft.follow(frontLeft);
-    middleRight.follow(frontRight);
     backRight.follow(frontRight);
 
     frontLeft.setInverted(false);
-    middleLeft.setInverted(InvertType.FollowMaster);
     backLeft.setInverted(InvertType.FollowMaster);
     frontRight.setInverted(true);
-    middleRight.setInverted(InvertType.FollowMaster);
     backRight.setInverted(InvertType.FollowMaster);
 
     frontLeft.configOpenloopRamp(0.2);
