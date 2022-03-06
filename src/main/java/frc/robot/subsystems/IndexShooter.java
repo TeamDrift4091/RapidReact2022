@@ -12,6 +12,7 @@ import com.revrobotics.ColorSensorV3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,8 +33,9 @@ public class IndexShooter extends SubsystemBase {
   public Color blue;
   public Color teamColor; 
 
-  //ULTRASONIC SENOR
-  Ultrasonic ultrasonic = new Ultrasonic(1, 2);
+  //PHOTOELECTRIC SENOR
+  //Ultrasonic ultrasonic = new Ultrasonic(1, 2);
+  DigitalInput indexSensor = new DigitalInput(0);
 
   public IndexShooter() {
     red = new Color(1, .5, .5);
@@ -76,7 +78,7 @@ public class IndexShooter extends SubsystemBase {
    * @return boolean representing if there is a ball in the top slot
    */
   public boolean isUpperSlotEmpty(){
-    return getRangeInches() > 2 && getColorMatch() == null;
+    return isBottomSlotFilled() && getColorMatch() != red && getColorMatch() != blue;
   }
 
   /**
@@ -107,8 +109,9 @@ public class IndexShooter extends SubsystemBase {
    * Returns the distance detected by the ultrasonic sensor in inches.  Used to detect ball in bottom slot.
    * @return ultrasonic sensor distance
    */
-  public double getRangeInches(){
-    return ultrasonic.getRangeInches();
+  public boolean isBottomSlotFilled(){
+    System.out.println(indexSensor.get());
+    return !indexSensor.get();
   }
 
   @Override

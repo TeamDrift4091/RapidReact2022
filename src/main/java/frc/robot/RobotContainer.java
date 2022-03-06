@@ -41,7 +41,7 @@ public class RobotContainer {
   private static JoystickButton joystickButton1 = new JoystickButton(joystick, 1); // Trigger
 
   // Controller buttons
-  private static JoystickButton controllerButton2 = new JoystickButton(controller, 2); // Button 'B'
+  private static JoystickButton joystickButton2 = new JoystickButton(controller, 2); // Button 'B'
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
@@ -89,7 +89,8 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -110,6 +111,8 @@ public class RobotContainer {
     colorChooser.addOption("Blue", 1);
     
     SmartDashboard.putData("Color", colorChooser);
+    SmartDashboard.putBoolean("Sensor", indexShooter.isBottomSlotFilled());
+
     // NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener((event) -> {
     //     indexShooter.setColor(colorChooser.getSelected());
     // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
