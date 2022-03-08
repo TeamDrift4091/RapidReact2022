@@ -46,10 +46,10 @@ public class IndexShooter extends SubsystemBase {
   }
 
   /**
-   * Sets the team color of the robot for the color sensor to compare to
+   * Sets the alliance color of the robot for the color sensor to compare to
    * @param color 0 - blue : 1 - red
    */
-  public void setColor(int color) {
+  public void setAllianceColor(int color) {
     teamColor = color == 1 ? blue : red;
   }
 
@@ -58,6 +58,11 @@ public class IndexShooter extends SubsystemBase {
    * @return Color (red, blue, or null)
    */
   public Color getColorMatch(){
+
+    // TODO: Tune threshold
+    if (colorSensor.getProximity() < 20) {
+      return null;
+    }
     
     Color detectedColor = colorSensor.getColor();
     ColorMatchResult match = colorMatcher.matchClosestColor(detectedColor);
@@ -78,7 +83,7 @@ public class IndexShooter extends SubsystemBase {
    * @return boolean representing if there is a ball in the top slot
    */
   public boolean isUpperSlotEmpty(){
-    return isBottomSlotFilled() && getColorMatch() != red && getColorMatch() != blue;
+    return isBottomSlotFilled() && getColorMatch().equals(null);
   }
 
   /**
@@ -115,8 +120,6 @@ public class IndexShooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    teamColor = NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").getString("null").equals("red") ? red : blue;
-
     SmartDashboard.putNumber("Red", colorSensor.getRed());
     SmartDashboard.putNumber("Green", colorSensor.getGreen());
     SmartDashboard.putNumber("Blue", colorSensor.getBlue());

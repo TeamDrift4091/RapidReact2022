@@ -15,12 +15,11 @@ import frc.robot.Constants;
 
 
 public class Intake extends SubsystemBase {
-  /** Creates a new Intake. */
 
   private DoubleSolenoid intakeSolenoid = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, Constants.INTAKE_SOLENOID_DOWN, Constants.INTAKE_SOLENOID_UP);
   private WPI_TalonFX intakeMotor = new WPI_TalonFX(Constants.INTAKE_PORT);
 
-
+  /** Creates a new Intake.*/
   public Intake() {
     intakeMotor.setNeutralMode(NeutralMode.Brake);
     intakeSolenoid.set(Value.kReverse); 

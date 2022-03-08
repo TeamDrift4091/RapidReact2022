@@ -44,14 +44,18 @@ public class IndexShooterCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // Shoot
     if(isTriggerPressed.getAsBoolean()){
-      shootBall(0.7);
+      // TODO: Dynamic distance shooting
+      shootBall(0.8);
+    // Eject unwanted ball
     } else if (indexShooter.isCorrectColor()){
-      shootBall(0.3);
+      shootBall(0.5);
     } else {
       shootBall(0);
     }
 
+    // 
     if(indexShooter.isUpperSlotEmpty()){
       advanceBall(.5);
     } else {

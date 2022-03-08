@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
@@ -56,17 +54,12 @@ public class RobotContainer {
   private final Intake intake = new Intake();
   private final Climber climber = new Climber();
 
-  private SendableChooser<Integer> colorChooser = new SendableChooser<>();
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
 
     // DriverStation.silenceJoystickConnectionWarning(true);
-
-    // Initialize the SmartDashboard choosers
-    initializeChoosers();
 
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
@@ -120,19 +113,8 @@ public class RobotContainer {
     return null;
   }
 
-  /**
-   * Anything controlled through the dashboard can be initialized here.
-   */
-  private void initializeChoosers() {
-    // colorChooser
-    colorChooser.setDefaultOption("Red", 0);
-    colorChooser.addOption("Blue", 1);
-    
-    SmartDashboard.putData("Color", colorChooser);
-    SmartDashboard.putBoolean("Sensor", indexShooter.isBottomSlotFilled());
-
-    // NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener((event) -> {
-    //     indexShooter.setColor(colorChooser.getSelected());
-    // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
+  public void updateAllianceColor() {
+    boolean isRedAlliance = DriverStation.getAlliance().equals(DriverStation.Alliance.Red);
+    indexShooter.setAllianceColor(isRedAlliance ? 0 : 1);
   }
 }
