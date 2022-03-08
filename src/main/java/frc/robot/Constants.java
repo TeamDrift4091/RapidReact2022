@@ -31,8 +31,8 @@ public final class Constants {
     public static int TOP_INDEX_MOTOR = 10;
 
     // Pneumatic Constants
-    public static int INTAKE_SOLENOID_DOWN = 0;
-    public static int INTAKE_SOLENOID_UP = 7;
+    public static int INTAKE_SOLENOID_DOWN = 7;
+    public static int INTAKE_SOLENOID_UP = 0;
 }
 
 

@@ -21,6 +21,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IndexShooter;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -39,9 +40,15 @@ public class RobotContainer {
 
   // Joystick buttons
   private static JoystickButton joystickButton1 = new JoystickButton(joystick, 1); // Trigger
+  private static JoystickButton joystickButton2 = new JoystickButton(joystick, 2);
+  private static JoystickButton joystickButton3 = new JoystickButton(joystick, 3);
+  private static JoystickButton joystickButton4 = new JoystickButton(joystick, 4);
+  private static JoystickButton joystickButton5 = new JoystickButton(joystick, 5);
+
+  
 
   // Controller buttons
-  private static JoystickButton joystickButton2 = new JoystickButton(controller, 2); // Button 'B'
+  private static JoystickButton controllerButton2 = new JoystickButton(controller, 2); // Button 'B'
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
@@ -90,6 +97,17 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    joystickButton2.whileHeld(new InstantCommand(() -> {
+      indexShooter.setMiddleIndexSpeed(.5);
+    }, indexShooter));
+
+    joystickButton3.whileHeld(new InstantCommand(() -> {
+      indexShooter.setTopIndexSpeed(.5);
+    }, indexShooter));
+    
+    joystickButton4.whileHeld(new InstantCommand(() -> {
+      indexShooter.setBottomIndexSpeed(.5);
+    }, indexShooter));
   }
 
   /**
@@ -117,5 +135,4 @@ public class RobotContainer {
     //     indexShooter.setColor(colorChooser.getSelected());
     // }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
   }
-
 }

@@ -106,11 +106,10 @@ public class IndexShooter extends SubsystemBase {
   }
 
   /**
-   * Returns the distance detected by the ultrasonic sensor in inches.  Used to detect ball in bottom slot.
-   * @return ultrasonic sensor distance
+   * Returns the if the sensor detecst a ball.
+   * @return boolean representing if a ball is present
    */
   public boolean isBottomSlotFilled(){
-    System.out.println(indexSensor.get());
     return !indexSensor.get();
   }
 

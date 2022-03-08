@@ -51,8 +51,8 @@ public class IntakeCommand extends CommandBase {
         isAlreadyActive = true;
       }
       // execute
-      if(timer.hasElapsed(1)){
-        intake.setIntakeSpeed(0.65 * activeDirection);
+      if(timer.hasElapsed(0.5)){
+        intake.setIntakeSpeed(0.75 * activeDirection);
       }
     // end
     } else {

@@ -56,7 +56,6 @@ public class Drivetrain extends SubsystemBase {
    */
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
-    System.out.println("hi");
   }
 
   @Override
