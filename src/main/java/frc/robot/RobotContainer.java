@@ -8,18 +8,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Climb;
-import frc.robot.commands.IndexShooterCommand;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeIndexShooterCommand;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.IndexShooter;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -50,17 +45,23 @@ public class RobotContainer {
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
-  private final IndexShooter indexShooter = new IndexShooter();
-  private final Intake intake = new Intake();
+  private final IntakeIndexShooter intakeIndexShooter = new IntakeIndexShooter();
   private final Climber climber = new Climber();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-
     // DriverStation.silenceJoystickConnectionWarning(true);
+  }
 
+  /**
+   * Use this method to define your button->command mappings. Buttons can be created by
+   * instantiating a {@link GenericHID} or one of its subclasses ({@link
+   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   */
+  private void configureButtonBindings() {
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> joystick.getY() * -1, // -Y is forward on the joystick
@@ -72,35 +73,11 @@ public class RobotContainer {
       () -> controller.getLeftY() * -1
     ));
 
-    indexShooter.setDefaultCommand(
-      new IndexShooterCommand(indexShooter, () -> joystickButton1.get())
-    );
-
-    intake.setDefaultCommand(new IntakeCommand(
-      intake,
-      () -> controller.getRightTriggerAxis(),
-      () -> controller.getLeftTriggerAxis()
+    intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
+      intakeIndexShooter,
+      () -> joystickButton1.get(),
+      () -> controller.getRightTriggerAxis() > .1
     ));
-  }
-
-  /**
-   * Use this method to define your button->command mappings. Buttons can be created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-   */
-  private void configureButtonBindings() {
-    joystickButton2.whileHeld(new InstantCommand(() -> {
-      indexShooter.setMiddleIndexSpeed(.5);
-    }, indexShooter));
-
-    joystickButton3.whileHeld(new InstantCommand(() -> {
-      indexShooter.setTopIndexSpeed(.5);
-    }, indexShooter));
-    
-    joystickButton4.whileHeld(new InstantCommand(() -> {
-      indexShooter.setBottomIndexSpeed(.5);
-    }, indexShooter));
   }
 
   /**
@@ -115,6 +92,6 @@ public class RobotContainer {
 
   public void updateAllianceColor() {
     boolean isRedAlliance = DriverStation.getAlliance().equals(DriverStation.Alliance.Red);
-    indexShooter.setAllianceColor(isRedAlliance ? 0 : 1);
+    intakeIndexShooter.setAllianceColor(isRedAlliance ? 0 : 1);
   }
 }

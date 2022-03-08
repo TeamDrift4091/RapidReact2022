@@ -18,17 +18,15 @@ public final class Constants {
     public static int BACK_LEFT_PORT = 2;
     public static int FRONT_RIGHT_PORT = 3;
     public static int BACK_RIGHT_PORT = 4;
-    
-    // Intake Constants
-    public static int INTAKE_PORT = 5;
 
     // Climber Constants
     public static int WINCH_MOTOR = 7;
 
     // Index and Shooter Constants
-    public static int MIDDLE_INDEX_MOTOR = 8;
+    public static int TOP_INDEX_MOTOR = 8;
     public static int BOTTOM_INDEX_MOTOR = 9;
-    public static int TOP_INDEX_MOTOR = 10;
+    public static int SHOOTER_MOTOR = 10;
+    public static int INTAKE_MOTOR = 5;
 
     // Pneumatic Constants
     public static int INTAKE_SOLENOID_DOWN = 7;
