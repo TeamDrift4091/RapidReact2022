@@ -75,8 +75,8 @@ public class RobotContainer {
 
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
       intakeIndexShooter,
-      () -> joystickButton1.get(),
-      () -> controller.getRightTriggerAxis() > .1
+      () -> controller.getRightTriggerAxis() > .1,
+      () -> joystickButton1.get()
     ));
   }
 
