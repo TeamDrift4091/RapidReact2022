@@ -42,14 +42,15 @@ public class IntakeIndexShooterCommand extends CommandBase {
     boolean shouldShoot = shootTrigger.getAsBoolean();
     boolean topSlotContainsBall = intakeIndexShooter.getUpperSlot();
     boolean bottomSlotContainsBall = intakeIndexShooter.getLowerSlot();
-    
-    // Shoot
-    if (shouldShoot) {
-      intakeIndexShooter.setShooterSpeed(.8);
-      intakeIndexShooter.setTopIndexSpeed(.6);
+
     // Eject wrong color
-    } else if (!intakeIndexShooter.isCorrectColor()) {
+    if (!intakeIndexShooter.isCorrectColor()) {
       intakeIndexShooter.setShooterSpeed(.6);
+      intakeIndexShooter.setTopIndexSpeed(.6);
+    // Shoot
+    } else if (shouldShoot) {
+      // TODO: Dynamic distance adjustment
+      intakeIndexShooter.setShooterSpeed(.8);
       intakeIndexShooter.setTopIndexSpeed(.6);
     // Do nothing
     } else {
