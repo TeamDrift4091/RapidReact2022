@@ -43,14 +43,14 @@ public class IntakeIndexShooterCommand extends CommandBase {
     boolean topSlotContainsBall = intakeIndexShooter.getUpperSlot();
     boolean bottomSlotContainsBall = intakeIndexShooter.getLowerSlot();
 
-    // Eject wrong color
-    if (!intakeIndexShooter.isCorrectColor()) {
-      intakeIndexShooter.setShooterSpeed(.6);
-      intakeIndexShooter.setTopIndexSpeed(.6);
     // Shoot
-    } else if (shouldShoot) {
+    if (shouldShoot) {
       // TODO: Dynamic distance adjustment
       intakeIndexShooter.setShooterSpeed(.8);
+      intakeIndexShooter.setTopIndexSpeed(.6);
+    // Eject wrong color
+    } else if (!intakeIndexShooter.isCorrectColor()) {
+      intakeIndexShooter.setShooterSpeed(.6);
       intakeIndexShooter.setTopIndexSpeed(.6);
     // Do nothing
     } else {
@@ -68,7 +68,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
       }
       // execute
       if(intakeDelayTimer.hasElapsed(0.5)){
-        intakeIndexShooter.setIntakeSpeed(-0.75); // Motor must be reversed
+        intakeIndexShooter.setIntakeSpeed(-0.5); // Motor must be reversed
 
         // Only runs until the bottomSlot is full because of the outermost if statement
         intakeIndexShooter.setBottomIndexSpeed(.5);
@@ -85,6 +85,8 @@ public class IntakeIndexShooterCommand extends CommandBase {
       // Advance lower ball
       if (bottomSlotContainsBall && !topSlotContainsBall) {
         intakeIndexShooter.setBottomIndexSpeed(.5);
+      } else {
+        intakeIndexShooter.setBottomIndexSpeed(0);
       }
     }
   }

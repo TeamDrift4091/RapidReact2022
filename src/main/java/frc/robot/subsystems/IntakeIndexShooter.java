@@ -36,6 +36,7 @@ public class IntakeIndexShooter extends SubsystemBase {
 
   public Color red;
   public Color blue;
+  public Color blank;
   public Color teamColor; 
 
   //PHOTOELECTRIC SENOR
@@ -47,6 +48,7 @@ public class IntakeIndexShooter extends SubsystemBase {
     // COLOR SENSOR
     red = new Color(1, .5, .5);
     blue = new Color(.5, .5, 1);
+    blank = new Color(.5, .5, .5);
     colorMatcher.addColorMatch(red);
     colorMatcher.addColorMatch(blue);
     colorMatcher.setConfidenceThreshold(.75); // Default .95
@@ -117,8 +119,9 @@ public class IntakeIndexShooter extends SubsystemBase {
    */
   public Color getColorMatch(){
     // TODO: Tune threshold
-    if (colorSensor.getProximity() < 20) {
-      return null;
+    // System.out.println(colorSensor.getProximity());
+    if (colorSensor.getProximity() < 170) {
+      return blank;
     }
     
     Color detectedColor = colorSensor.getColor();
@@ -132,7 +135,8 @@ public class IntakeIndexShooter extends SubsystemBase {
    * @return boolean representing if the ball is the same color as the team
    */
   public boolean isCorrectColor(){
-    return getColorMatch().equals(teamColor);
+    // System.out.println(getColorMatch().equals(red) + ", " + getColorMatch().equals(blue));
+    return getColorMatch().equals(teamColor) || getColorMatch().equals(blank);
   }
 
   /**
@@ -140,7 +144,7 @@ public class IntakeIndexShooter extends SubsystemBase {
    * @return boolean representing if there is a ball in the top slot
    */
   public boolean getUpperSlot(){
-    return getColorMatch().equals(null);
+    return !getColorMatch().equals(blank);
   }
 
   /**
