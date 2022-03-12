@@ -17,7 +17,9 @@ public class IntakeIndexShooterCommand extends CommandBase {
   private BooleanSupplier shootTrigger;
 
   private Timer intakeDelayTimer;
+  private Timer intakeContinueTimer;
   private boolean intakeIsAlreadyActive;
+  private boolean intakeIsAlreadyOff;
 
   /** Creates a new IntakeIndexShooterCommand. */
   public IntakeIndexShooterCommand(IntakeIndexShooter intakeIndexShooter, BooleanSupplier intakeTrigger, BooleanSupplier shootTrigger) {
@@ -28,7 +30,9 @@ public class IntakeIndexShooterCommand extends CommandBase {
     this.shootTrigger = shootTrigger;
 
     this.intakeDelayTimer = new Timer();
+    this.intakeContinueTimer = new Timer();
     this.intakeIsAlreadyActive = false;
+    this.intakeIsAlreadyOff = false;
   }
 
   // Called when the command is initially scheduled.
@@ -64,28 +68,38 @@ public class IntakeIndexShooterCommand extends CommandBase {
       if (!intakeIsAlreadyActive) {
         intakeIndexShooter.extendIntakeArm();
         intakeDelayTimer.start();
+        intakeContinueTimer.reset();
+        intakeContinueTimer.stop();
         intakeIsAlreadyActive = true;
+        intakeIsAlreadyOff = false;
       }
       // execute
       if(intakeDelayTimer.hasElapsed(0.5)){
         intakeIndexShooter.setIntakeSpeed(-0.5); // Motor must be reversed
 
         // Only runs until the bottomSlot is full because of the outermost if statement
-        intakeIndexShooter.setBottomIndexSpeed(.5);
+        intakeIndexShooter.setBottomIndexSpeed(.6);
+      } else {
+        intakeContinueTimer.stop();
       }
     // end
     } else {
-      intakeIndexShooter.retractIntakeArm();
-      intakeIndexShooter.setIntakeSpeed(0);
-      intakeDelayTimer.reset();
-      intakeDelayTimer.stop();
-  
-      intakeIsAlreadyActive = false;
+      if (!intakeIsAlreadyOff) {
+        intakeIndexShooter.retractIntakeArm();
+        intakeDelayTimer.reset();
+        intakeDelayTimer.stop();
+        intakeContinueTimer.start();
+        intakeIsAlreadyActive = false;
+        intakeIsAlreadyOff = true;
+      }
 
-      // Advance lower ball
-      if (bottomSlotContainsBall && !topSlotContainsBall) {
-        intakeIndexShooter.setBottomIndexSpeed(.5);
+      intakeIndexShooter.setIntakeSpeed(0);
+
+      // Advance Ball and keep motor spinning after intake retracts
+      if (!intakeContinueTimer.hasElapsed(1) || (bottomSlotContainsBall && !topSlotContainsBall)) {
+        intakeIndexShooter.setBottomIndexSpeed(.6);
       } else {
+        intakeContinueTimer.stop();
         intakeIndexShooter.setBottomIndexSpeed(0);
       }
     }
