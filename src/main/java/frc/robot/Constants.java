@@ -20,11 +20,9 @@ public final class Constants {
 
     // Drivetrain Constants
     public static int FRONT_LEFT_PORT = 1;
-    public static int MIDDLE_LEFT_PORT = 2;
-    public static int BACK_LEFT_PORT = 3;
-    public static int FRONT_RIGHT_PORT = 4;
-    public static int MIDDLE_RIGHT_PORT = 5;
-    public static int BACK_RIGHT_PORT = 6;
+    public static int BACK_LEFT_PORT = 2;
+    public static int FRONT_RIGHT_PORT = 3;
+    public static int BACK_RIGHT_PORT = 4;
 
     public static double WHEEL_BASE_WIDTH_INCHES = 21.875; // inches
     public static double WHEEL_BASE_WIDTH = Units.inchesToMeters(WHEEL_BASE_WIDTH_INCHES); // meters
@@ -40,4 +38,19 @@ public final class Constants {
     public static double MAX_SPEED = Units.feetToMeters(MAX_SPEED_FEET_PER_SECOND); // meters per second
         // Tangential velocity / radius
     public static double MAX_ANGULAR_VELOCITY = MAX_SPEED/(WHEEL_BASE_WIDTH/2.); // radians per second;
+
+    // Climber Constants
+    public static int WINCH_MOTOR = 7;
+
+    // Index and Shooter Constants
+    public static int TOP_INDEX_MOTOR = 8;
+    public static int BOTTOM_INDEX_MOTOR = 9;
+    public static int SHOOTER_MOTOR = 10;
+    public static int INTAKE_MOTOR = 5;
+
+    // Pneumatic Constants
+    public static int INTAKE_SOLENOID_DOWN = 7;
+    public static int INTAKE_SOLENOID_UP = 0;
 }
+
+

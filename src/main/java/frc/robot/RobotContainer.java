@@ -15,7 +15,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.Climb;
+import frc.robot.commands.IntakeIndexShooterCommand;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.Autonomous1Ball;
 import frc.robot.commands.drivetrain.JoystickDrive;
@@ -30,12 +34,29 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's controllers...
+  // the joystick will control the drivetrain and shooter subsystems
   private static Joystick joystick = new Joystick(0);
+  // the controller will control the intake and climber
+  private static XboxController controller = new XboxController(1);
+
+  // Joystick buttons
+  private static JoystickButton joystickButton1 = new JoystickButton(joystick, 1); // Trigger
+  private static JoystickButton joystickButton2 = new JoystickButton(joystick, 2);
+  private static JoystickButton joystickButton3 = new JoystickButton(joystick, 3);
+  private static JoystickButton joystickButton4 = new JoystickButton(joystick, 4);
+  private static JoystickButton joystickButton5 = new JoystickButton(joystick, 5);
+
+  
+
+  // Controller buttons
+  private static JoystickButton controllerButton2 = new JoystickButton(controller, 2); // Button 'B'
 
   private static JoystickButton button1 = new JoystickButton(joystick, 1);
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
+  private final IntakeIndexShooter intakeIndexShooter = new IntakeIndexShooter();
+  private final Climber climber = new Climber();
 
   private SendableChooser<Integer> colorChooser = new SendableChooser<>();
 
@@ -46,12 +67,6 @@ public class RobotContainer {
     // Initialize the SmartDashboard choosers
     initializeChoosers();
     DriverStation.silenceJoystickConnectionWarning(true);
-
-    drivetrain.setDefaultCommand(new JoystickDrive(
-      drivetrain,
-      () -> joystick.getY() * -1, // -Y is forward on the joystick
-      () -> joystick.getX()
-    ));
   }
 
   /**
@@ -60,7 +75,24 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {  }
+  private void configureButtonBindings() {
+    drivetrain.setDefaultCommand(new JoystickDrive(
+      drivetrain,
+      () -> joystick.getY() * -1, // -Y is forward on the joystick
+      () -> joystick.getX()
+    ));
+
+    climber.setDefaultCommand(new Climb(
+      climber,
+      () -> controller.getLeftY() * -1
+    ));
+
+    intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
+      intakeIndexShooter,
+      () -> controller.getRightTriggerAxis() > .1,
+      () -> joystickButton1.get()
+    ));
+  }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -83,5 +115,10 @@ public class RobotContainer {
     NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener((event) -> {
       NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(colorChooser.getSelected()); 
     }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
+  }
+
+  public void updateAllianceColor() {
+    boolean isRedAlliance = DriverStation.getAlliance().equals(DriverStation.Alliance.Red);
+    intakeIndexShooter.setAllianceColor(isRedAlliance ? 0 : 1);
   }
 }

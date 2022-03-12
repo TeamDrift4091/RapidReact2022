@@ -24,10 +24,8 @@ public class Drivetrain extends SubsystemBase {
   private DifferentialDrive differentialDrive;
 
   private WPI_TalonFX frontLeft;
-  private WPI_TalonFX middleLeft;
   private WPI_TalonFX backLeft;
   private WPI_TalonFX frontRight;
-  private WPI_TalonFX middleRight;
   private WPI_TalonFX backRight;
 
   private AHRS gyro = new AHRS();
@@ -44,25 +42,19 @@ public class Drivetrain extends SubsystemBase {
   /** Creates a new Drivetrain. */
   public Drivetrain() {
     frontLeft = new WPI_TalonFX(Constants.FRONT_LEFT_PORT);
-    middleLeft = new WPI_TalonFX(Constants.MIDDLE_LEFT_PORT);
     backLeft = new WPI_TalonFX(Constants.BACK_LEFT_PORT);
     frontRight = new WPI_TalonFX(Constants.FRONT_RIGHT_PORT);
-    middleRight = new WPI_TalonFX(Constants.MIDDLE_RIGHT_PORT);
     backRight = new WPI_TalonFX(Constants.BACK_RIGHT_PORT);
 
     differentialDrive = new DifferentialDrive(frontLeft, frontRight);
     differentialDrive.setSafetyEnabled(false);
 
-    middleLeft.follow(frontLeft);
     backLeft.follow(frontLeft);
-    middleRight.follow(frontRight);
     backRight.follow(frontRight);
 
     frontLeft.setInverted(false);
-    middleLeft.setInverted(InvertType.FollowMaster);
     backLeft.setInverted(InvertType.FollowMaster);
     frontRight.setInverted(true);
-    middleRight.setInverted(InvertType.FollowMaster);
     backRight.setInverted(InvertType.FollowMaster);
 
     frontLeft.configOpenloopRamp(0.2);
@@ -102,6 +94,14 @@ public class Drivetrain extends SubsystemBase {
 		frontRight.setSelectedSensorPosition(0, 0, Constants.TIMEOUT_MS);
   }
 
+  /**
+   * Arcade drive method using differential drive.
+   *
+   * @param speed The robot's speed along the X axis [-1.0..1.0]. Forward is positive.
+   * @param rotation The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is
+   *     positive.
+   * @param squareInputs If set, decreases the input sensitivity at low speeds.
+   */
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
   }
