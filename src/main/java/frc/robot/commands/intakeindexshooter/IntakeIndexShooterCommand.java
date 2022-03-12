@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.intakeindexshooter;
 
 import java.util.function.BooleanSupplier;
 
@@ -50,7 +50,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
     // Shoot
     if (shouldShoot) {
       // TODO: Dynamic distance adjustment
-      intakeIndexShooter.setShooterSpeed(.8);
+      intakeIndexShooter.setShooterSpeed(1);
       intakeIndexShooter.setTopIndexSpeed(.6);
     // Eject wrong color
     } else if (!intakeIndexShooter.isCorrectColor()) {

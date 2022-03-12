@@ -15,14 +15,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.Climb;
-import frc.robot.commands.IntakeIndexShooterCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.Autonomous1Ball;
+import frc.robot.commands.climber.Climb;
 import frc.robot.commands.drivetrain.JoystickDrive;
+import frc.robot.commands.drivetrain.TargetTracking;
+import frc.robot.commands.intakeindexshooter.IntakeIndexShooterCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -92,6 +93,8 @@ public class RobotContainer {
       () -> controller.getRightTriggerAxis() > .1,
       () -> joystickButton1.get()
     ));
+
+    joystickButton2.whenHeld(new TargetTracking(drivetrain));
   }
 
   /**

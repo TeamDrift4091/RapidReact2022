@@ -10,12 +10,12 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class BallTracking extends CommandBase {
+public class TargetTracking extends CommandBase {
 
   private Drivetrain drivetrain;
 
   /** Creates a new BallTracking. */
-  public BallTracking(Drivetrain drivetrain) {
+  public TargetTracking(Drivetrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
     addRequirements(drivetrain);
