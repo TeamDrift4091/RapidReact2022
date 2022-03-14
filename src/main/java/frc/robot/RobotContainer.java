@@ -4,27 +4,19 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.EntryListenerFlags;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.TableListener;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.autonomous.Autonomous1Ball;
-import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.LowerClimber;
+import frc.robot.commands.climber.RaiseClimber;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.commands.drivetrain.TargetTracking;
 import frc.robot.commands.intakeindexshooter.IntakeIndexShooterCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -34,39 +26,24 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's controllers...
-  // the joystick will control the drivetrain and shooter subsystems
-  private static Joystick joystick = new Joystick(0);
   // the controller will control the intake and climber
   private static XboxController controller = new XboxController(1);
 
-  // Joystick buttons
-  private static JoystickButton joystickButton1 = new JoystickButton(joystick, 1); // Trigger
-  private static JoystickButton joystickButton2 = new JoystickButton(joystick, 2);
-  private static JoystickButton joystickButton3 = new JoystickButton(joystick, 3);
-  private static JoystickButton joystickButton4 = new JoystickButton(joystick, 4);
-  private static JoystickButton joystickButton5 = new JoystickButton(joystick, 5);
-
-  
-
   // Controller buttons
-  private static JoystickButton controllerButton2 = new JoystickButton(controller, 2); // Button 'B'
+  JoystickButton controllerAButton = new JoystickButton(controller, 1);
+  JoystickButton controllerYButton = new JoystickButton(controller, 4);
+  JoystickButton controllerLeftBumper = new JoystickButton(controller, 5);
 
-  private static JoystickButton button1 = new JoystickButton(joystick, 1);
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
   private final IntakeIndexShooter intakeIndexShooter = new IntakeIndexShooter();
   private final Climber climber = new Climber();
 
-  private SendableChooser<Integer> colorChooser = new SendableChooser<>();
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    // Initialize the SmartDashboard choosers
-    initializeChoosers();
     DriverStation.silenceJoystickConnectionWarning(true);
   }
 
@@ -77,24 +54,24 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    // DRIVETRAIN
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
-      () -> joystick.getY() * -1, // -Y is forward on the joystick
-      () -> joystick.getX()
+      () -> controller.getLeftY() * -1, // -Y is forward on the joystick
+      () -> controller.getRightX()
     ));
+    controllerLeftBumper.whenHeld(new TargetTracking(drivetrain));
 
-    climber.setDefaultCommand(new Climb(
-      climber,
-      () -> controller.getLeftY() * -1
-    ));
-
+    // INTAKE INDEX SHOOTER
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
       intakeIndexShooter,
-      () -> controller.getRightTriggerAxis() > .1,
-      () -> joystickButton1.get()
+      () -> controller.getLeftTriggerAxis() > .1,
+      () -> controller.getRightTriggerAxis() > .1
     ));
 
-    joystickButton2.whenHeld(new TargetTracking(drivetrain));
+    // CLIMBER
+    controllerAButton.whenHeld(new LowerClimber(climber));
+    controllerYButton.whenHeld(new RaiseClimber(climber));
   }
 
   /**
@@ -104,20 +81,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return new Autonomous1Ball(drivetrain);
-  }
-
-  /**
-   * Anything controlled through the dashboard can be initialized here.
-   */
-  private void initializeChoosers() {
-    // colorChooser
-    colorChooser.setDefaultOption("Red", 0);
-    colorChooser.addOption("Blue", 1);
-    
-    SmartDashboard.putData("Color", colorChooser);
-    NetworkTableInstance.getDefault().getTable("SmartDashboard").getSubTable("Color").getEntry("active").addListener((event) -> {
-      NetworkTableInstance.getDefault().getTable("limelight").getEntry("pipeline").setNumber(colorChooser.getSelected()); 
-    }, EntryListenerFlags.kNew | EntryListenerFlags.kUpdate); 
   }
 
   public void updateAllianceColor() {

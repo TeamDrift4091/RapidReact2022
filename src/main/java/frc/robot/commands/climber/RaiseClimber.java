@@ -4,37 +4,25 @@
 
 package frc.robot.commands.climber;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
-public class Climb extends CommandBase {
-  /** Creates a new Climb. */
+public class RaiseClimber extends CommandBase {
   private Climber climber;
-  private DoubleSupplier controllerY;
 
-
-
-  public Climb(Climber climber,  DoubleSupplier controllerY) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.climber = climber;
+  /** Creates a new RaiseClimber. */
+  public RaiseClimber(Climber climber) {
     addRequirements(climber);
-    this.controllerY = controllerY;
-
-  }
+    this.climber = climber;  }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double updatedY = controllerY.getAsDouble();
-    climber.moveWinch(updatedY);
+    climber.moveWinch(.5);
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +32,7 @@ public class Climb extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // TODO: Potentially use when motor is reaching its physical limits
     return false;
   }
 }
