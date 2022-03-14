@@ -34,7 +34,10 @@ public class JoystickDrive extends CommandBase {
   public void execute() {
     double updatedY = joyY.getAsDouble();
     double updatedX = joyX.getAsDouble();
-    drivetrain.arcadeDrive(updatedY, updatedX, true);
+    // Options:
+    // drivetrain.arcadeDrive(updatedY, updatedX, true); // Default
+    drivetrain.arcadeDrive(updatedY, updatedX*updatedX, true); // Stronger ramping on rotation
+    // drivetrain.arcadeDrive(updatedY, updatedX*.5, true); // Limited max rotation
   }
 
   // Called once the command ends or is interrupted.
