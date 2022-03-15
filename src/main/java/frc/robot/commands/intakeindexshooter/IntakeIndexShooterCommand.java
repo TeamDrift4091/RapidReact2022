@@ -18,6 +18,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
 
   private Timer intakeDelayTimer;
   private Timer intakeContinueTimer;
+  private Timer ejectContinueTimer;
   private boolean intakeIsAlreadyActive;
   private boolean intakeIsAlreadyOff;
 
@@ -31,6 +32,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
 
     this.intakeDelayTimer = new Timer();
     this.intakeContinueTimer = new Timer();
+    this.ejectContinueTimer = new Timer();
     this.intakeIsAlreadyActive = false;
     this.intakeIsAlreadyOff = false;
   }
@@ -56,8 +58,11 @@ public class IntakeIndexShooterCommand extends CommandBase {
     } else if (!intakeIndexShooter.isCorrectColor()) {
       intakeIndexShooter.setShooterSpeed(.6);
       intakeIndexShooter.setTopIndexSpeed(.6);
+      ejectContinueTimer.reset();
+      ejectContinueTimer.start();
     // Do nothing
-    } else {
+    } else if(ejectContinueTimer.hasElapsed(1)) {
+      ejectContinueTimer.stop();
       intakeIndexShooter.setShooterSpeed(0);
       intakeIndexShooter.setTopIndexSpeed(0);
     }

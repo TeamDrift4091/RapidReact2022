@@ -59,22 +59,22 @@ public class AutonomousTrajectory extends CommandBase {
     
     ChassisSpeeds speeds = ramseteController.calculate(drivetrain.getPose(), reference);
 
-    var normalized_ramsete_speed = speeds.vxMetersPerSecond / Constants.MAX_SPEED;
-    var normalized_ramsete_rotation = -speeds.omegaRadiansPerSecond / Constants.MAX_ANGULAR_VELOCITY;
+    double normalized_ramsete_speed = speeds.vxMetersPerSecond / Constants.MAX_SPEED;
+    double normalized_ramsete_rotation = -speeds.omegaRadiansPerSecond / Constants.MAX_ANGULAR_VELOCITY;
 
     drivetrain.arcadeDrive(normalized_ramsete_speed, normalized_ramsete_rotation, false);
 
 
 
-    var t_pose = reference.poseMeters;
-    var t_x = t_pose.getX();
-    var t_y = t_pose.getY();
-    var t_rotation = t_pose.getRotation().getDegrees();
+    Pose2d t_pose = reference.poseMeters;
+    double t_x = t_pose.getX();
+    double t_y = t_pose.getY();
+    double t_rotation = t_pose.getRotation().getDegrees();
 
-    var a_pose = drivetrain.getPose();
-    var a_x = a_pose.getX();
-    var a_y = a_pose.getY();
-    var a_rotation = a_pose.getRotation().getDegrees();
+    Pose2d a_pose = drivetrain.getPose();
+    double a_x = a_pose.getX();
+    double a_y = a_pose.getY();
+    double a_rotation = a_pose.getRotation().getDegrees();
 
     SmartDashboard.putNumber("Ramsete Speed - Normalized", normalized_ramsete_speed);
     SmartDashboard.putNumber("Ramsete Rot - Normalized", normalized_ramsete_rotation);

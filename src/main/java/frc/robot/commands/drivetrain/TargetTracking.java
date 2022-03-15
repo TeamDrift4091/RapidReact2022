@@ -7,12 +7,15 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class TargetTracking extends CommandBase {
 
   private Drivetrain drivetrain;
+  //private Timer timer = new Timer();
+  private double horizontalAngle;
 
   /** Creates a new BallTracking. */
   public TargetTracking(Drivetrain drivetrain) {
@@ -33,11 +36,18 @@ public class TargetTracking extends CommandBase {
     NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry tx = limelightTable.getEntry("tx");
 
-    double horizontalAngle = tx.getDouble(0);
+    horizontalAngle = tx.getDouble(0);
+    double steeringAdjustment;
 
-    double steeringAdjustment = .03 * Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle);
-
-    drivetrain.arcadeDrive(0, steeringAdjustment, false);
+    if(horizontalAngle == 0){
+      drivetrain.arcadeDrive(0, .15, false);
+    }
+    
+    if(Math.abs(horizontalAngle) > 1){ 
+      steeringAdjustment = 0.06 * Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle);
+      drivetrain.arcadeDrive(0, steeringAdjustment, false);
+    }
+   
   }
 
   // Called once the command ends or is interrupted.
@@ -49,6 +59,7 @@ public class TargetTracking extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    // return timer.hasElapsed(4);
+    return horizontalAngle < 1;
   }
 }

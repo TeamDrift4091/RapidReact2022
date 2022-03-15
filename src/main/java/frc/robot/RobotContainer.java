@@ -11,7 +11,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.autonomous.Autonomous1Ball;
+import frc.robot.commands.autonomous.AutonomousCommand;
 import frc.robot.commands.climber.LowerClimber;
 import frc.robot.commands.climber.RaiseClimber;
 import frc.robot.commands.drivetrain.JoystickDrive;
@@ -80,7 +80,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new Autonomous1Ball(drivetrain);
+    return new AutonomousCommand(drivetrain, intakeIndexShooter);
+    //return new Autonomous1Ball(drivetrain);
   }
 
   public void updateAllianceColor() {
