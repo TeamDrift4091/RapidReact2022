@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
@@ -27,7 +28,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // the controller will control the intake and climber
-  private static XboxController controller = new XboxController(1);
+  // private static XboxController controller = new XboxController(1);
+  private static PS4Controller controller = new PS4Controller(1);
 
   // Controller buttons
   JoystickButton controllerAButton = new JoystickButton(controller, 1);
@@ -65,8 +67,8 @@ public class RobotContainer {
     // INTAKE INDEX SHOOTER
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
       intakeIndexShooter,
-      () -> controller.getLeftTriggerAxis() > .1,
-      () -> controller.getRightTriggerAxis() > .1
+      () -> controller.getL2Axis() > .1,
+      () -> controller.getR2Axis() > .1
     ));
 
     // CLIMBER

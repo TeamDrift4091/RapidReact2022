@@ -41,7 +41,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
           new Pose2d(5, 0, Rotation2d.fromDegrees(0)), // Field coords: (49, 5) -45
           // *********
           new TrajectoryConfig(
-            Units.feetToMeters(3),
+            Units.feetToMeters(4.5),
             Units.feetToMeters(2)
           ).setKinematics(
             new DifferentialDriveKinematics(
@@ -51,7 +51,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         )
       ),
-      new TargetTracking(drivetrain),
+      new TargetTracking(drivetrain).withTimeout(5),
       new Shoot(intakeIndexShooter),
       new AutonomousTrajectory(
         drivetrain,
@@ -66,7 +66,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
           new Pose2d(-3, 0, Rotation2d.fromDegrees(0)), // Field coords: (49, 5) -45
           // *********
           new TrajectoryConfig(
-            Units.feetToMeters(3),
+            Units.feetToMeters(4.5),
             Units.feetToMeters(2)
           ).setKinematics(
             new DifferentialDriveKinematics(

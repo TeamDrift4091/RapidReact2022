@@ -16,6 +16,9 @@ public class TargetTracking extends CommandBase {
   private Drivetrain drivetrain;
   //private Timer timer = new Timer();
   private double horizontalAngle;
+  private double updatedHorizontalAngle = 1;
+  private double threshold = 1;
+  
 
   /** Creates a new BallTracking. */
   public TargetTracking(Drivetrain drivetrain) {
@@ -41,9 +44,11 @@ public class TargetTracking extends CommandBase {
 
     if(horizontalAngle == 0){
       drivetrain.arcadeDrive(0, .15, false);
+    } else if(horizontalAngle < threshold ){
+        updatedHorizontalAngle = horizontalAngle;
     }
     
-    if(Math.abs(horizontalAngle) > 1){ 
+    if(Math.abs(horizontalAngle) > threshold){ 
       steeringAdjustment = 0.06 * Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle);
       drivetrain.arcadeDrive(0, steeringAdjustment, false);
     }
@@ -60,6 +65,6 @@ public class TargetTracking extends CommandBase {
   @Override
   public boolean isFinished() {
     // return timer.hasElapsed(4);
-    return horizontalAngle < 1;
+    return updatedHorizontalAngle < threshold;
   }
 }
