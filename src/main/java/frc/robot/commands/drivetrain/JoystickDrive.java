@@ -34,7 +34,6 @@ public class JoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("hi");
     double updatedY = joyY.getAsDouble();
     double updatedX = joyX.getAsDouble();
     drivetrain.arcadeDrive(updatedY, updatedX, true);

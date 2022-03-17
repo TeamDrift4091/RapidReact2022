@@ -15,15 +15,17 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
-
+import frc.robot.commands.drivetrain.TargetTrackingClockwiseBias;
+import frc.robot.commands.intakeindexshooter.Shoot;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.IntakeIndexShooter;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Autonomous1Ball extends SequentialCommandGroup {
   /** Creates a new Autonomous1Ball. */
-  public Autonomous1Ball(Drivetrain drivetrain) {
+  public Autonomous1Ball(Drivetrain drivetrain, IntakeIndexShooter intakeIndexShooter) {
     addCommands(
       //new AutonomousMotionMagic(drivetrain, 24), // 2 feet?
       // new AutonomousAimAndShoot(drivetrain, shooter),
@@ -32,24 +34,23 @@ public class Autonomous1Ball extends SequentialCommandGroup {
         TrajectoryGenerator.generateTrajectory(
           // Configure path here
           // *********
-          // Field coords from bottom left
-          new Pose2d(0,0, Rotation2d.fromDegrees(0)), // Field coords: (31.5, 9) -45
+          new Pose2d(0,0, Rotation2d.fromDegrees(0)),
           List.of(
-            // new Translation2d(1.15, .75)
           ),
-          new Pose2d(5, 0, Rotation2d.fromDegrees(0)), // Field coords: (49, 5) -45
+          new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
           // *********
           new TrajectoryConfig(
-            Units.feetToMeters(3),
+            Units.feetToMeters(4.5),
             Units.feetToMeters(2)
           ).setKinematics(
             new DifferentialDriveKinematics(
               Constants.WHEEL_BASE_WIDTH
             )
           )
-
         )
-      )
+      ),
+      new TargetTrackingClockwiseBias(drivetrain),
+      new Shoot(intakeIndexShooter)
     );
   }
 }

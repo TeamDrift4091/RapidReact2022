@@ -8,14 +8,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeIndexShooter;
 
-public class Intake extends CommandBase {
+public class IntakeBall extends CommandBase {
   /** Creates a new Intake. */
   IntakeIndexShooter intakeIndexShooter;
   Timer timerCommand = new Timer();
   Timer intakeContinueTimer = new Timer();
   Timer intakeDelayTimer = new Timer();
   
-  public Intake(IntakeIndexShooter intakeIndexShooter) {
+  public IntakeBall(IntakeIndexShooter intakeIndexShooter) {
     // Use addReq uirements() here to declare subsystem dependencies.
     this.intakeIndexShooter = intakeIndexShooter;
     addRequirements(intakeIndexShooter);

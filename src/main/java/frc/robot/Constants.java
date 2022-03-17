@@ -18,6 +18,10 @@ public final class Constants {
 
     public static final int TIMEOUT_MS = 30;
 
+    // Target Tracking Constants
+    public static double TARGET_TRACKING_P = 0.03;
+    public static double TARGET_TRACKING_I = 0.04;
+
     // Drivetrain Constants
     public static int FRONT_LEFT_PORT = 1;
     public static int BACK_LEFT_PORT = 2;

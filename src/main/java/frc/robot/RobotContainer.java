@@ -12,11 +12,12 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.autonomous.AutonomousCommand;
+import frc.robot.commands.autonomous.Autonomous2Ball;
 import frc.robot.commands.climber.LowerClimber;
 import frc.robot.commands.climber.RaiseClimber;
 import frc.robot.commands.drivetrain.JoystickDrive;
-import frc.robot.commands.drivetrain.TargetTracking;
+import frc.robot.commands.drivetrain.TargetTrackingClockwiseBias;
+import frc.robot.commands.drivetrain.TargetTrackingCounterClockwiseBias;
 import frc.robot.commands.intakeindexshooter.IntakeIndexShooterCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -35,6 +36,7 @@ public class RobotContainer {
   JoystickButton controllerAButton = new JoystickButton(controller, 1);
   JoystickButton controllerYButton = new JoystickButton(controller, 4);
   JoystickButton controllerLeftBumper = new JoystickButton(controller, 5);
+  JoystickButton controllerRightBumper = new JoystickButton(controller, 6);
 
 
   // The robot's subsystems and commands are defined here...
@@ -59,14 +61,17 @@ public class RobotContainer {
     // DRIVETRAIN
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
-      () -> controller.getLeftY() * -1, // -Y is forward on the joystick
-      () -> controller.getRightX()
+      () -> controller.getLeftY() * -1 * .8, // -Y is forward on the joystick
+      () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX())
     ));
-    controllerLeftBumper.whenHeld(new TargetTracking(drivetrain));
+    controllerRightBumper.whenHeld(new TargetTrackingClockwiseBias(drivetrain));
+    controllerLeftBumper.whenHeld(new TargetTrackingCounterClockwiseBias(drivetrain));
 
     // INTAKE INDEX SHOOTER
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
       intakeIndexShooter,
+      // () -> controller.getLeftTriggerAxis() > .1,
+      // () -> controller.getRightTriggerAxis() > .1
       () -> controller.getL2Axis() > .1,
       () -> controller.getR2Axis() > .1
     ));
@@ -82,7 +87,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new AutonomousCommand(drivetrain, intakeIndexShooter);
+    return new Autonomous2Ball(drivetrain, intakeIndexShooter);
     //return new Autonomous1Ball(drivetrain);
   }
 
