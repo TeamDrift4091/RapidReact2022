@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
@@ -52,9 +53,10 @@ public class Autonomous2Ball extends SequentialCommandGroup {
       ),
       new ParallelCommandGroup(
         new IntakeBall(intakeIndexShooter),
-        new AutonomousMotionMagic(drivetrain, 40)
+        new AutonomousMotionMagic(drivetrain, 80)
       ),
-      new TargetTrackingClockwiseBias(drivetrain),
+      new InstantCommand(() -> {intakeIndexShooter.setBottomIndexSpeed(.5);}, intakeIndexShooter).withTimeout(.5),
+      new TargetTrackingClockwiseBias(drivetrain).withTimeout(2.5),
       new Shoot(intakeIndexShooter),
       new AutonomousTrajectory(
         drivetrain,

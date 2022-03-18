@@ -31,6 +31,7 @@ public class Shoot extends CommandBase {
   public void execute() {
       intakeIndexShooter.setShooterSpeed(1);
       intakeIndexShooter.setTopIndexSpeed(.6);
+      intakeIndexShooter.setBottomIndexSpeed(.4);;
   }
 
   // Called once the command ends or is interrupted.
@@ -44,6 +45,6 @@ public class Shoot extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(2);
+    return timer.hasElapsed(3);
   }
 }

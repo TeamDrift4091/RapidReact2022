@@ -157,7 +157,6 @@ public class IntakeIndexShooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    System.out.println("Hello there -Obi-Wan Kenobi");
     // This method will be called once per scheduler run
     int r = colorSensor.getRed();
     int g = colorSensor.getGreen();

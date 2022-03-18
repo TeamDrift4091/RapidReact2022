@@ -12,6 +12,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.autonomous.Autonomous1Ball;
 import frc.robot.commands.autonomous.Autonomous2Ball;
 import frc.robot.commands.climber.LowerClimber;
 import frc.robot.commands.climber.RaiseClimber;
@@ -29,8 +30,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // the controller will control the intake and climber
-  // private static XboxController controller = new XboxController(1);
-  private static PS4Controller controller = new PS4Controller(1);
+  private static XboxController controller = new XboxController(1);
+  // private static PS4Controller controller = new PS4Controller(1);
 
   // Controller buttons
   JoystickButton controllerAButton = new JoystickButton(controller, 1);
@@ -61,8 +62,8 @@ public class RobotContainer {
     // DRIVETRAIN
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
-      () -> controller.getLeftY() * -1 * .8, // -Y is forward on the joystick
-      () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX())
+      () -> controller.getLeftY() * -1 * .6, // -Y is forward on the joystick
+      () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX()) * .6
     ));
     controllerRightBumper.whenHeld(new TargetTrackingClockwiseBias(drivetrain));
     controllerLeftBumper.whenHeld(new TargetTrackingCounterClockwiseBias(drivetrain));
@@ -70,10 +71,10 @@ public class RobotContainer {
     // INTAKE INDEX SHOOTER
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
       intakeIndexShooter,
-      // () -> controller.getLeftTriggerAxis() > .1,
-      // () -> controller.getRightTriggerAxis() > .1
-      () -> controller.getL2Axis() > .1,
-      () -> controller.getR2Axis() > .1
+      () -> controller.getLeftTriggerAxis() > .1,
+      () -> controller.getRightTriggerAxis() > .1
+      // () -> controller.getL2Axis() > .1,
+      // () -> controller.getR2Axis() > .1
     ));
 
     // CLIMBER
@@ -87,8 +88,8 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    return new Autonomous2Ball(drivetrain, intakeIndexShooter);
-    //return new Autonomous1Ball(drivetrain);
+    // return new Autonomous2Ball(drivetrain, intakeIndexShooter);
+    return new Autonomous1Ball(drivetrain, intakeIndexShooter);
   }
 
   public void updateAllianceColor() {

@@ -37,7 +37,7 @@ public class Autonomous1Ball extends SequentialCommandGroup {
           new Pose2d(0,0, Rotation2d.fromDegrees(0)),
           List.of(
           ),
-          new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
+          new Pose2d(5, 0, Rotation2d.fromDegrees(0)),
           // *********
           new TrajectoryConfig(
             Units.feetToMeters(4.5),
@@ -49,8 +49,28 @@ public class Autonomous1Ball extends SequentialCommandGroup {
           )
         )
       ),
-      new TargetTrackingClockwiseBias(drivetrain),
-      new Shoot(intakeIndexShooter)
+      new TargetTrackingClockwiseBias(drivetrain).withTimeout(2.5),
+      new Shoot(intakeIndexShooter),
+      new AutonomousTrajectory(
+        drivetrain,
+        TrajectoryGenerator.generateTrajectory(
+          // Configure path here
+          // *********
+          new Pose2d(0,0, Rotation2d.fromDegrees(0)),
+          List.of(
+          ),
+          new Pose2d(-3, 0, Rotation2d.fromDegrees(0)),
+          // *********
+          new TrajectoryConfig(
+            Units.feetToMeters(4.5),
+            Units.feetToMeters(2)
+          ).setKinematics(
+            new DifferentialDriveKinematics(
+              Constants.WHEEL_BASE_WIDTH
+            )
+          ).setReversed(true)
+        )
+      )
     );
   }
 }

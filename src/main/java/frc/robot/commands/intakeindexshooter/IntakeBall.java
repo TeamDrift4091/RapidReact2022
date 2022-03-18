@@ -52,6 +52,6 @@ public class IntakeBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timerCommand.hasElapsed(5);
+    return timerCommand.hasElapsed(2);
   }
 }
