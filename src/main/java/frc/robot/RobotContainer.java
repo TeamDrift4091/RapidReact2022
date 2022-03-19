@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
@@ -45,10 +47,15 @@ public class RobotContainer {
   private final IntakeIndexShooter intakeIndexShooter = new IntakeIndexShooter();
   private final Climber climber = new Climber();
 
+  // Choosers
+  private final SendableChooser<Command> autonomousChooser = new SendableChooser<>();
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    // Initialize all sendable choosers
+    initializeChoosers();
     DriverStation.silenceJoystickConnectionWarning(true);
   }
 
@@ -83,13 +90,24 @@ public class RobotContainer {
   }
 
   /**
+   * Use this method to create {@link SendableChooser}s and initialize them properly.
+   */
+  private void initializeChoosers() {
+    autonomousChooser.setDefaultOption("2 Ball", new Autonomous2Ball(drivetrain, intakeIndexShooter));
+    autonomousChooser.addOption("1 Ball", new Autonomous1Ball(drivetrain, intakeIndexShooter));
+
+    SmartDashboard.putData("Autonomous Chooser", autonomousChooser);
+  }
+
+  /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
     // return new Autonomous2Ball(drivetrain, intakeIndexShooter);
-    return new Autonomous1Ball(drivetrain, intakeIndexShooter);
+    // return new Autonomous1Ball(drivetrain, intakeIndexShooter);
+    return autonomousChooser.getSelected();
   }
 
   public void updateAllianceColor() {
