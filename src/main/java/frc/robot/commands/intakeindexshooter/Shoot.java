@@ -4,8 +4,13 @@
 
 package frc.robot.commands.intakeindexshooter;
 
+import edu.wpi.first.math.Pair;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeIndexShooter;
 
 public class Shoot extends CommandBase {
@@ -29,9 +34,22 @@ public class Shoot extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-      intakeIndexShooter.setShooterSpeed(1);
+    NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry ty = limelightTable.getEntry("ty");
+    double verticalAngle = ty.getDouble(0);
+    double velocity = -1;
+    for (Pair<Double, Double> curDistPower : Constants.DISTANCE_TO_POWER) {
+      double sampleAngle = curDistPower.getFirst();
+      if (sampleAngle < verticalAngle) {
+        break;
+      }
+      velocity = curDistPower.getSecond();
+    }
+    if (velocity != -1) {
+      intakeIndexShooter.setShooterSpeed(velocity);
       intakeIndexShooter.setTopIndexSpeed(.6);
-      intakeIndexShooter.setBottomIndexSpeed(.4);;
+      intakeIndexShooter.setBottomIndexSpeed(.4);
+    }
   }
 
   // Called once the command ends or is interrupted.

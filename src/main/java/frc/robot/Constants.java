@@ -4,6 +4,10 @@
 
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.List;
+
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.util.Units;
 
 /**
@@ -51,6 +55,14 @@ public final class Constants {
     public static int BOTTOM_INDEX_MOTOR = 9;
     public static int SHOOTER_MOTOR = 10;
     public static int INTAKE_MOTOR = 5;
+
+    public static List<Pair<Double, Double>> DISTANCE_TO_POWER = Arrays.asList(
+        // Go from greatest to least
+        new Pair<>(1.5, 1.),
+        new Pair<>(1.3, .9),
+        // TODO: ....
+        new Pair<>(0.0, -1.0)
+      );
 
     // Pneumatic Constants
     public static int INTAKE_SOLENOID_DOWN = 7;

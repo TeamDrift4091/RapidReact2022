@@ -16,6 +16,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.IntakeIndexShooter;
 
 public class IntakeIndexShooterCommand extends CommandBase {
@@ -30,14 +31,6 @@ public class IntakeIndexShooterCommand extends CommandBase {
   private boolean intakeIsAlreadyOff;
 
   private Timer ejectContinueTimer;
-
-  private List<Pair<Double, Double>> distanceToPower = Arrays.asList(
-    // Go from greatest to least
-    new Pair<>(1.5, 1.),
-    new Pair<>(1.3, .9),
-    // TODO: ....
-    new Pair<>(0.0, -1.0)
-  );
 
   /** Creates a new IntakeIndexShooterCommand. */
   public IntakeIndexShooterCommand(IntakeIndexShooter intakeIndexShooter, BooleanSupplier intakeTrigger, BooleanSupplier shootTrigger) {
@@ -88,7 +81,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
       NetworkTableEntry ty = limelightTable.getEntry("ty");
       double verticalAngle = ty.getDouble(0);
       double velocity = -1;
-      for (Pair<Double, Double> curDistPower : distanceToPower) {
+      for (Pair<Double, Double> curDistPower : Constants.DISTANCE_TO_POWER) {
         double sampleAngle = curDistPower.getFirst();
         if (sampleAngle < verticalAngle) {
           break;
