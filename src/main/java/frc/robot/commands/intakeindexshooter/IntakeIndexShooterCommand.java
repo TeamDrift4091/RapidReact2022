@@ -4,6 +4,7 @@
 
 package frc.robot.commands.intakeindexshooter;
 
+import java.lang.reflect.Field;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -18,9 +19,10 @@ public class IntakeIndexShooterCommand extends CommandBase {
 
   private Timer intakeDelayTimer;
   private Timer intakeContinueTimer;
-  private Timer ejectContinueTimer;
   private boolean intakeIsAlreadyActive;
   private boolean intakeIsAlreadyOff;
+
+  private Timer ejectContinueTimer;
 
   /** Creates a new IntakeIndexShooterCommand. */
   public IntakeIndexShooterCommand(IntakeIndexShooter intakeIndexShooter, BooleanSupplier intakeTrigger, BooleanSupplier shootTrigger) {
@@ -32,9 +34,22 @@ public class IntakeIndexShooterCommand extends CommandBase {
 
     this.intakeDelayTimer = new Timer();
     this.intakeContinueTimer = new Timer();
-    this.ejectContinueTimer = new Timer();
     this.intakeIsAlreadyActive = false;
-    this.intakeIsAlreadyOff = false;
+    this.intakeIsAlreadyOff = true;
+
+    this.ejectContinueTimer = new Timer();
+
+    // Reflection - Start intakeContinueTimer at 1 second elapsed
+    try {
+      Class timerClass = Timer.class;
+      Field t_startTime = timerClass.getDeclaredField("m_startTime");
+      t_startTime.setAccessible(true);
+      double intakeContinueTimer_startTime = (double) t_startTime.get(intakeContinueTimer);
+      intakeContinueTimer_startTime -= 1000;
+      t_startTime.set(intakeContinueTimer_startTime, intakeContinueTimer_startTime);
+    } catch (NoSuchFieldException | IllegalAccessException exception) {
+      exception.printStackTrace();
+    }
   }
 
   // Called when the command is initially scheduled.
