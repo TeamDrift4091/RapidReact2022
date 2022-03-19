@@ -48,11 +48,11 @@ public final class Constants {
     public static double MAX_ANGULAR_VELOCITY = MAX_SPEED/(WHEEL_BASE_WIDTH/2.); // radians per second;
 
     // Climber Constants
-    public static int WINCH_MOTOR = 7;
+    public static int WINCH_MOTOR = 6;
 
     // Index and Shooter Constants
     public static int TOP_INDEX_MOTOR = 8;
-    public static int BOTTOM_INDEX_MOTOR = 9;
+    public static int BOTTOM_INDEX_MOTOR = 7;
     public static int SHOOTER_MOTOR = 10;
     public static int INTAKE_MOTOR = 5;
 
