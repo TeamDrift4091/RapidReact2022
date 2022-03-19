@@ -62,6 +62,14 @@ public class TargetTrackingClockwiseBias extends CommandBase {
   public boolean isFinished() {
     SmartDashboard.putNumber("horizontalAngle", horizontalAngle);
     
+    // TODO: Find lower and upper limit of range
+    NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry ty = limelightTable.getEntry("ty");
+    double verticalAngle = ty.getDouble(0);
+    SmartDashboard.putBoolean("Target In Range", verticalAngle != 0);
+    // SmartDashboard.putBoolean("Target In Range", .1 < verticalAngle && verticalAngle < 2);
+    
+    // TODO: This doesn't seem to be working.  But is it necessary?
     if (Math.abs(horizontalAngle) < threshold && horizontalAngle != 0) {
       inThreshold++;
     } else {

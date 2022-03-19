@@ -4,20 +4,10 @@
 
 package frc.robot.commands.autonomous;
 
-import java.util.List;
-
 import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -63,31 +53,6 @@ public class AutonomousTrajectory extends CommandBase {
     double normalized_ramsete_rotation = -speeds.omegaRadiansPerSecond / Constants.MAX_ANGULAR_VELOCITY;
 
     drivetrain.arcadeDrive(normalized_ramsete_speed, normalized_ramsete_rotation, false);
-
-
-
-    Pose2d t_pose = reference.poseMeters;
-    double t_x = t_pose.getX();
-    double t_y = t_pose.getY();
-    double t_rotation = t_pose.getRotation().getDegrees();
-
-    Pose2d a_pose = drivetrain.getPose();
-    double a_x = a_pose.getX();
-    double a_y = a_pose.getY();
-    double a_rotation = a_pose.getRotation().getDegrees();
-
-    SmartDashboard.putNumber("Ramsete Speed - Normalized", normalized_ramsete_speed);
-    SmartDashboard.putNumber("Ramsete Rot - Normalized", normalized_ramsete_rotation);
-
-    SmartDashboard.putNumber("Pose X - Trajectory", t_x);
-    SmartDashboard.putNumber("Pose Y - Trajectory", t_y);
-    SmartDashboard.putNumber("Pose R - Trajectory", t_rotation);
-
-    SmartDashboard.putNumber("Pose X - Actual", a_x);
-    SmartDashboard.putNumber("Pose Y - Actual", a_y);
-    SmartDashboard.putNumber("Pose R - Actual", a_rotation);
-
-    SmartDashboard.putNumber("Raw Gyro Angle", drivetrain.getGyroAngle());
   }
 
   // Called once the command ends or is interrupted.

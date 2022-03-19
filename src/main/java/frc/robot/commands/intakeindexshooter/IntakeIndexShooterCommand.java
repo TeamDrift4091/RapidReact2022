@@ -5,9 +5,16 @@
 package frc.robot.commands.intakeindexshooter;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import edu.wpi.first.math.Pair;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeIndexShooter;
 
@@ -23,6 +30,14 @@ public class IntakeIndexShooterCommand extends CommandBase {
   private boolean intakeIsAlreadyOff;
 
   private Timer ejectContinueTimer;
+
+  private List<Pair<Double, Double>> distanceToPower = Arrays.asList(
+    // Go from greatest to least
+    new Pair<>(1.5, 1.),
+    new Pair<>(1.3, .9),
+    // TODO: ....
+    new Pair<>(0.0, -1.0)
+  );
 
   /** Creates a new IntakeIndexShooterCommand. */
   public IntakeIndexShooterCommand(IntakeIndexShooter intakeIndexShooter, BooleanSupplier intakeTrigger, BooleanSupplier shootTrigger) {
@@ -41,12 +56,12 @@ public class IntakeIndexShooterCommand extends CommandBase {
 
     // Reflection - Start intakeContinueTimer at 1 second elapsed
     try {
-      Class timerClass = Timer.class;
+      Class<Timer> timerClass = Timer.class;
       Field t_startTime = timerClass.getDeclaredField("m_startTime");
       t_startTime.setAccessible(true);
       double intakeContinueTimer_startTime = (double) t_startTime.get(intakeContinueTimer);
       intakeContinueTimer_startTime -= 1000;
-      t_startTime.set(intakeContinueTimer_startTime, intakeContinueTimer_startTime);
+      t_startTime.set(intakeContinueTimer, intakeContinueTimer_startTime);
     } catch (NoSuchFieldException | IllegalAccessException exception) {
       exception.printStackTrace();
     }
@@ -68,9 +83,22 @@ public class IntakeIndexShooterCommand extends CommandBase {
 
     // Shoot
     if (shouldShoot) {
-      // TODO: Dynamic distance adjustment
-      intakeIndexShooter.setShooterSpeed(1);
-      intakeIndexShooter.setTopIndexSpeed(.6);
+      // TODO: Should the robot shoot if the limelight can't see the target?
+      NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+      NetworkTableEntry ty = limelightTable.getEntry("ty");
+      double verticalAngle = ty.getDouble(0);
+      double velocity = -1;
+      for (Pair<Double, Double> curDistPower : distanceToPower) {
+        double sampleAngle = curDistPower.getFirst();
+        if (sampleAngle < verticalAngle) {
+          break;
+        }
+        velocity = curDistPower.getSecond();
+      }
+      if (velocity != -1) {
+        intakeIndexShooter.setShooterSpeed(velocity);
+        intakeIndexShooter.setTopIndexSpeed(.6);
+      }
     // Eject wrong color
     } else if (!intakeIndexShooter.isCorrectColor()) {
       intakeIndexShooter.setShooterSpeed(.6);

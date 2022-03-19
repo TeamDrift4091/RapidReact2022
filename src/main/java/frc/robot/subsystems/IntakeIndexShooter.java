@@ -118,8 +118,6 @@ public class IntakeIndexShooter extends SubsystemBase {
    * @return Color (red, blue, or null)
    */
   public Color getColorMatch(){
-    // TODO: Tune threshold
-    // System.out.println(colorSensor.getProximity());
     if (colorSensor.getProximity() < 170) {
       return blank;
     }
