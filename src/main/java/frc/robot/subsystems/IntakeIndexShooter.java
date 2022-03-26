@@ -156,21 +156,22 @@ public class IntakeIndexShooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    int r = colorSensor.getRed();
-    int g = colorSensor.getGreen();
-    int b = colorSensor.getBlue();
-    int max = Math.max(r,Math.max(g,b));
+    
+    // int r = colorSensor.getRed();
+    // int g = colorSensor.getGreen();
+    // int b = colorSensor.getBlue();
+    // int max = Math.max(r,Math.max(g,b));
 
-    try {
-    SmartDashboard.putNumber("R", r);
-    SmartDashboard.putNumber("G", g);
-    SmartDashboard.putNumber("B", b);
-    SmartDashboard.putNumber("R (n)", r / max);
-    SmartDashboard.putNumber("G (n)", g / max);
-    SmartDashboard.putNumber("B (n)", b / max);
-    SmartDashboard.putBoolean("isRed", getColorMatch().equals(red));
-    SmartDashboard.putBoolean("isBlue", getColorMatch().equals(blue));
-    SmartDashboard.putBoolean("isEmpty", getColorMatch().equals(blank));
-    } catch (ArithmeticException e) {}
+    // try {
+    // SmartDashboard.putNumber("R", r);
+    // SmartDashboard.putNumber("G", g);
+    // SmartDashboard.putNumber("B", b);
+    // SmartDashboard.putNumber("R (n)", r / max);
+    // SmartDashboard.putNumber("G (n)", g / max);
+    // SmartDashboard.putNumber("B (n)", b / max);
+    // SmartDashboard.putBoolean("isRed", getColorMatch().equals(red));
+    // SmartDashboard.putBoolean("isBlue", getColorMatch().equals(blue));
+    // SmartDashboard.putBoolean("isEmpty", getColorMatch().equals(blank));
+    // } catch (ArithmeticException e) {}
   }
 }

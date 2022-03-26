@@ -14,6 +14,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.autonomous.Autonomous1Ball;
 import frc.robot.commands.autonomous.Autonomous2Ball;
 import frc.robot.commands.climber.LowerClimber;
@@ -32,11 +33,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // the controller will control the intake and climber
-  private static XboxController controller = new XboxController(1);
-  // private static PS4Controller controller = new PS4Controller(1);
+  // private static XboxController controller = new XboxController(1);
+  private static PS4Controller controller = new PS4Controller(0);
 
   // Controller buttons
-  JoystickButton controllerAButton = new JoystickButton(controller, 1);
+  JoystickButton controllerAButton = new JoystickButton(controller, 2);
+  JoystickButton controllerBButton = new JoystickButton(controller, 3);
+  JoystickButton controllerXButton = new JoystickButton(controller, 1);
   JoystickButton controllerYButton = new JoystickButton(controller, 4);
   JoystickButton controllerLeftBumper = new JoystickButton(controller, 5);
   JoystickButton controllerRightBumper = new JoystickButton(controller, 6);
@@ -70,23 +73,45 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> controller.getLeftY() * -1 * .6, // -Y is forward on the joystick
-      () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX()) * .6
+      () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX()) * .4
     ));
-    controllerRightBumper.whenHeld(new TargetTrackingClockwiseBias(drivetrain));
-    controllerLeftBumper.whenHeld(new TargetTrackingCounterClockwiseBias(drivetrain));
+    controllerRightBumper.whileHeld(new TargetTrackingClockwiseBias(drivetrain));
+    controllerLeftBumper.whileHeld(new TargetTrackingCounterClockwiseBias(drivetrain));
 
     // INTAKE INDEX SHOOTER
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
       intakeIndexShooter,
-      () -> controller.getLeftTriggerAxis() > .1,
-      () -> controller.getRightTriggerAxis() > .1
-      // () -> controller.getL2Axis() > .1,
-      // () -> controller.getR2Axis() > .1
+      // () -> controller.getLeftTriggerAxis() > .1,
+      // () -> controller.getRightTriggerAxis() > .1
+      () -> controller.getL2Axis() > .1,
+      () -> controller.getR2Axis() > .1
     ));
 
-    // CLIMBER
-    controllerAButton.whenHeld(new LowerClimber(climber));
-    controllerYButton.whenHeld(new RaiseClimber(climber));
+    // // CLIMBER
+    // controllerAButton.whenHeld(new LowerClimber(climber));
+    // controllerYButton.whenHeld(new RaiseClimber(climber));
+
+    controllerBButton.whileHeld(new InstantCommand(() -> {
+      intakeIndexShooter.setTopIndexSpeed(.2);
+    }, intakeIndexShooter)
+    // {
+    //   @Override
+    //   public void end(boolean interrupted) {
+    //       intakeIndexShooter.setTopIndexSpeed(0);
+    //   }
+    // }
+    );
+
+    controllerXButton.whileHeld(new InstantCommand(() -> {
+      intakeIndexShooter.setShooterSpeed(.2);
+    }, intakeIndexShooter) 
+    // {
+    //   @Override
+    //   public void end(boolean interrupted) {
+    //       intakeIndexShooter.setShooterSpeed(0);
+    //   }
+    // }
+    );
   }
 
   /**

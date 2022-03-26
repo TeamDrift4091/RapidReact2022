@@ -41,7 +41,7 @@ public class TargetTrackingClockwiseBias extends CommandBase {
     NetworkTableEntry tx = limelightTable.getEntry("tx");
     horizontalAngle = tx.getDouble(0);
 
-    if(horizontalAngle == 0){
+    if (horizontalAngle == 0) {
       drivetrain.arcadeDrive(0, .2, false);
     } else {
       // steeringAdjustment = Constants.TARGET_TRACKING_P * Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle);
@@ -60,8 +60,6 @@ public class TargetTrackingClockwiseBias extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putNumber("horizontalAngle", horizontalAngle);
-    
     // TODO: Find lower and upper limit of range
     NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry ty = limelightTable.getEntry("ty");

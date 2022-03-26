@@ -183,16 +183,16 @@ public class Drivetrain extends SubsystemBase {
     // pose = odometry.update(getHeading(), frontLeft.getSelectedSensorPosition(), frontRight.getSelectedSensorPosition());
     updateOdometry();
 
-    SmartDashboard.putNumber("RPM (frontLeft)", frontLeft.getSelectedSensorVelocity()*600/4096.);
-    SmartDashboard.putNumber("RPM (frontRight)", frontRight.getSelectedSensorVelocity()*600/4096.);
-    if (SmartDashboard.getNumber("RPM (Average)", 0) < (frontLeft.getSelectedSensorVelocity()+frontRight.getSelectedSensorVelocity())*600/4096./2.) {
-      SmartDashboard.putNumber("RPM (Average)", (frontLeft.getSelectedSensorVelocity()+frontRight.getSelectedSensorVelocity())*600/4096./2.);
-    }
-    SmartDashboard.putNumber("MPS (frontLeft)", Units.feetToMeters(((frontLeft.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)));
-    SmartDashboard.putNumber("MPS (frontRight)", Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)));
-    SmartDashboard.putNumber("MPS (Average)", (Units.feetToMeters(((frontLeft.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)) +
-                                              Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)))/2.);
+    // SmartDashboard.putNumber("RPM (frontLeft)", frontLeft.getSelectedSensorVelocity()*600/4096.);
+    // SmartDashboard.putNumber("RPM (frontRight)", frontRight.getSelectedSensorVelocity()*600/4096.);
+    // if (SmartDashboard.getNumber("RPM (Average)", 0) < (frontLeft.getSelectedSensorVelocity()+frontRight.getSelectedSensorVelocity())*600/4096./2.) {
+    //   SmartDashboard.putNumber("RPM (Average)", (frontLeft.getSelectedSensorVelocity()+frontRight.getSelectedSensorVelocity())*600/4096./2.);
+    // }
+    // SmartDashboard.putNumber("MPS (frontLeft)", Units.feetToMeters(((frontLeft.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)));
+    // SmartDashboard.putNumber("MPS (frontRight)", Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)));
+    // SmartDashboard.putNumber("MPS (Average)", (Units.feetToMeters(((frontLeft.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)) +
+    //                                           Units.feetToMeters(((frontRight.getSelectedSensorVelocity()/60.)/7.6)/(.5*Math.PI)))/2.);
 
-    SmartDashboard.putNumber("Encoder Ticks (frontLeft)", frontLeft.getSelectedSensorPosition());
+    // SmartDashboard.putNumber("Encoder Ticks (frontLeft)", frontLeft.getSelectedSensorPosition());
   }
 }

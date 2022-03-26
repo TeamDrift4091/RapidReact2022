@@ -73,6 +73,9 @@ public class IntakeIndexShooterCommand extends CommandBase {
       if (velocity != -1) {
         intakeIndexShooter.setShooterSpeed(velocity);
         intakeIndexShooter.setTopIndexSpeed(.6);
+      } else {
+        intakeIndexShooter.setShooterSpeed(.6);
+        intakeIndexShooter.setTopIndexSpeed(.6);
       }
     // Eject wrong color
     } else if (!intakeIndexShooter.isCorrectColor()) {

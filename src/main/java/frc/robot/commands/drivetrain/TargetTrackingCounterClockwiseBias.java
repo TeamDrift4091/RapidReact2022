@@ -57,9 +57,7 @@ public class TargetTrackingCounterClockwiseBias extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    SmartDashboard.putNumber("horizontalAngle", horizontalAngle);
-    
+  public boolean isFinished() {    
     if (Math.abs(horizontalAngle) < threshold && horizontalAngle != 0) {
       inThreshold++;
     } else {
