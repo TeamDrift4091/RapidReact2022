@@ -83,10 +83,6 @@ public class GamingDrive extends CommandBase {
       velocity *= velocityDecay;
     }
 
-
-    SmartDashboard.putNumber("velocity", velocity);
-    SmartDashboard.putNumber("TimeDelta", timeDeltaInSeconds);
-
     // TODO: Curvature Drive?
     drivetrain.arcadeDrive(velocity, steering.getAsDouble(), false);
   }
