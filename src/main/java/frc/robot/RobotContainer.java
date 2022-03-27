@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.GamingDrive;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -25,16 +26,14 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
  */
 public class RobotContainer {
   private enum DriveMode {
+    ARCADE_DRIVE,
     TANK_DRIVE,
-    ARCADE_DRIVE
+    GAMING_DRIVE
   }
   private SendableChooser<DriveMode> driveModeChooser = new SendableChooser<>();
 
   // The robot's controllers...
-  // the joystick will control the drivetrain and shooter subsystems
-  private static Joystick joystick = new Joystick(0);
-  // the controller will control the intake and climber
-  private static XboxController controller = new XboxController(1);
+  private static XboxController controller = new XboxController(0);
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
@@ -63,36 +62,47 @@ public class RobotContainer {
     //   System.out.println("Lol.\n\n");
     //   e.printStackTrace();
     // }
-    drivetrain.setDefaultCommand(
-      new ConditionalCommand(
-        new JoystickDrive(
-          drivetrain,
-          () -> joystick.getY(),
-          () -> joystick.getX()
-        ), new TankDrive(
-          drivetrain,
-          () -> controller.getLeftY(),
-          () -> controller.getRightY()
-        ),
-        () -> driveModeChooser.getSelected() == DriveMode.ARCADE_DRIVE
-      ) {
-        @Override
-        public boolean isFinished() {
-          try {
-            Class conditionalCommandClass = Class.forName("edu.wpi.first.wpilibj2.command.ConditionalCommand");
-            Field selectedCommand = conditionalCommandClass.getDeclaredField("m_selectedCommand");
-            selectedCommand.setAccessible(true);
-            Command command = (Command) selectedCommand.get(this);
-            if (command != null) {
-              return super.isFinished();
-            }
-          } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-            e.printStackTrace();
-          }
-          return false;
-        };
-      }
-    );
+
+    // drivetrain.setDefaultCommand(
+    //   new ConditionalCommand(
+    //     new JoystickDrive(
+    //       drivetrain,
+    //       () -> joystick.getY(),
+    //       () -> joystick.getX()
+    //     ), new GamingDrive(
+    //       drivetrain,
+    //       () -> controller.getRightTriggerAxis(),
+    //       () -> controller.getLeftTriggerAxis(),
+    //       () -> controller.getLeftX(),
+    //       () -> controller.getAButton()
+    //     ),
+    //     () -> driveModeChooser.getSelected() == DriveMode.ARCADE_DRIVE
+    //   ) {
+    //     @Override
+    //     public boolean isFinished() {
+    //       try {
+    //         Class conditionalCommandClass = Class.forName("edu.wpi.first.wpilibj2.command.ConditionalCommand");
+    //         Field selectedCommand = conditionalCommandClass.getDeclaredField("m_selectedCommand");
+    //         selectedCommand.setAccessible(true);
+    //         Command command = (Command) selectedCommand.get(this);
+    //         if (command != null) {
+    //           return super.isFinished();
+    //         }
+    //       } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+    //         e.printStackTrace();
+    //       }
+    //       return false;
+    //     };
+    //   }
+    // );
+
+    drivetrain.setDefaultCommand(new GamingDrive(
+      drivetrain,
+      () -> controller.getRightTriggerAxis(),
+      () -> controller.getLeftTriggerAxis(),
+      () -> controller.getLeftX(),
+      () -> controller.getAButton()  
+    ));
   }
 
   /**
@@ -102,8 +112,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    driveModeChooser.setDefaultOption("Tank Drive", DriveMode.TANK_DRIVE);
-    driveModeChooser.addOption("Arcade Drive", DriveMode.ARCADE_DRIVE);
+    driveModeChooser.setDefaultOption("Tank Drive", DriveMode.ARCADE_DRIVE);
+    driveModeChooser.addOption("Arcade Drive", DriveMode.TANK_DRIVE);
+    driveModeChooser.addOption("Gaming Drive", DriveMode.GAMING_DRIVE);
     SmartDashboard.putData("Drive Mode", driveModeChooser);
   }
 
