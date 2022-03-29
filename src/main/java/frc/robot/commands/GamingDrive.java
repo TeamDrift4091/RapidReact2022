@@ -17,6 +17,8 @@ public class GamingDrive extends CommandBase {
   private DoubleSupplier gas, brake, steering;
   private BooleanSupplier eBrake;
 
+  private boolean quickTurn;
+
   private double velocity;
   private double velocityDecay = .95;
 
@@ -83,8 +85,15 @@ public class GamingDrive extends CommandBase {
       velocity *= velocityDecay;
     }
 
-    // TODO: Curvature Drive?
-    drivetrain.arcadeDrive(velocity, steering.getAsDouble(), false);
+    // Calculate quickTurn
+    quickTurn = Math.abs(velocity) < .1;
+
+    // Fix reversing weirdness
+    double steeringDouble = steering.getAsDouble();
+    steeringDouble *= Math.signum(velocity);
+
+    // drivetrain.arcadeDrive(velocity, steering.getAsDouble(), false);
+    drivetrain.curvatureDrive(velocity, steeringDouble, quickTurn);
   }
 
   // Called once the command ends or is interrupted.

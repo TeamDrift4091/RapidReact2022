@@ -46,13 +46,16 @@ public class Drivetrain extends SubsystemBase {
     frontRight.setNeutralMode(NeutralMode.Brake);
   }
 
-  // This this how we will control the robot in most cases
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
   }
 
   public void tankDrive(double left, double right) {
     differentialDrive.tankDrive(left, right);
+  }
+
+  public void curvatureDrive(double speed, double rotation, boolean inPlaceTurning) {
+    differentialDrive.curvatureDrive(speed, rotation, inPlaceTurning);
   }
 
   @Override
