@@ -14,6 +14,7 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.autonomous.Autonomous1Ball;
 import frc.robot.commands.autonomous.Autonomous2Ball;
 import frc.robot.commands.climber.LowerClimber;
@@ -21,6 +22,7 @@ import frc.robot.commands.climber.RaiseClimber;
 import frc.robot.commands.drivetrain.JoystickDrive;
 import frc.robot.commands.drivetrain.TargetTrackingClockwiseBias;
 import frc.robot.commands.drivetrain.TargetTrackingCounterClockwiseBias;
+import frc.robot.commands.drivetrain.TargetTrackingDistance;
 import frc.robot.commands.intakeindexshooter.IntakeIndexShooterCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -72,8 +74,16 @@ public class RobotContainer {
       () -> controller.getLeftY() * -1 * .6, // -Y is forward on the joystick
       () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX()) * .6
     ));
-    controllerRightBumper.whenHeld(new TargetTrackingClockwiseBias(drivetrain));
-    controllerLeftBumper.whenHeld(new TargetTrackingCounterClockwiseBias(drivetrain));
+    // controllerRightBumper.whenHeld(new TargetTrackingClockwiseBias(drivetrain));
+    controllerRightBumper.whenHeld(new SequentialCommandGroup(
+      new TargetTrackingClockwiseBias(drivetrain),
+      new TargetTrackingDistance(drivetrain)
+    ));
+    // controllerLeftBumper.whenHeld(new TargetTrackingCounterClockwiseBias(drivetrain));
+    controllerLeftBumper.whenHeld(new SequentialCommandGroup(
+      new TargetTrackingCounterClockwiseBias(drivetrain),
+      new TargetTrackingDistance(drivetrain)
+    ));
 
     // INTAKE INDEX SHOOTER
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
