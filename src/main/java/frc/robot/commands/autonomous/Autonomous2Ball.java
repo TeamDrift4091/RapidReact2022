@@ -55,7 +55,7 @@ public class Autonomous2Ball extends SequentialCommandGroup {
         new IntakeBall(intakeIndexShooter),
         new AutonomousMotionMagic(drivetrain, 80)
       ),
-      new InstantCommand(() -> {intakeIndexShooter.setBottomIndexSpeed(.5);}, intakeIndexShooter).withTimeout(.5),
+      //new InstantCommand(() -> {intakeIndexShooter.setBottomIndexSpeed(.5);}, intakeIndexShooter).withTimeout(.5),
       new TargetTrackingClockwiseBias(drivetrain).withTimeout(2.5),
       new Shoot(intakeIndexShooter),
       new AutonomousTrajectory(

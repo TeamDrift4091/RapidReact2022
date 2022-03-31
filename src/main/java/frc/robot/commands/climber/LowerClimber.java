@@ -4,6 +4,7 @@
 
 package frc.robot.commands.climber;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 
@@ -23,17 +24,18 @@ public class LowerClimber extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climber.moveWinch(-.5);
+    climber.moveWinch(1);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    climber.moveWinch(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // TODO: Potentially use when motor is reaching its physical limits
-    return false;
+    return climber.getLimitSwitch();
   }
 }

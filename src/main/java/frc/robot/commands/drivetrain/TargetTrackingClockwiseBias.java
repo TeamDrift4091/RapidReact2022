@@ -68,6 +68,8 @@ public class TargetTrackingClockwiseBias extends CommandBase {
     double verticalAngle = ty.getDouble(0);
     SmartDashboard.putBoolean("Target In Range", verticalAngle != 0);
     // SmartDashboard.putBoolean("Target In Range", .1 < verticalAngle && verticalAngle < 2);
+
+    SmartDashboard.putNumber("inThreshold", inThreshold);
     
     // TODO: This doesn't seem to be working.  But is it necessary?
     if (Math.abs(horizontalAngle) < threshold && horizontalAngle != 0) {

@@ -48,25 +48,28 @@ public final class Constants {
     public static double MAX_ANGULAR_VELOCITY = MAX_SPEED/(WHEEL_BASE_WIDTH/2.); // radians per second;
 
     // Climber Constants
-    public static int WINCH_MOTOR = 6;
+    public static int WINCH_MOTOR = 9;
 
     // Index and Shooter Constants
-    public static int TOP_INDEX_MOTOR = 8;
-    public static int BOTTOM_INDEX_MOTOR = 7;
-    public static int SHOOTER_MOTOR = 10;
+    public static int TOP_INDEX_MOTOR = 7;
+    public static int BOTTOM_INDEX_MOTOR = 8;
+    public static int SHOOTER_MOTOR = 6;
     public static int INTAKE_MOTOR = 5;
 
     public static List<Pair<Double, Double>> DISTANCE_TO_POWER = Arrays.asList(
         // Go from greatest to least
-        new Pair<>(1.5, 1.),
-        new Pair<>(1.3, .9),
+        new Pair<>(13.30, 1.),
+        new Pair<>(10.50, 1.0),
+        new Pair<>(8.5, 1.0),
+        new Pair<>(8.5, 1.0),
         // TODO: ....
         new Pair<>(0.0, -1.0)
       );
 
     // Pneumatic Constants
-    public static int INTAKE_SOLENOID_DOWN = 7;
-    public static int INTAKE_SOLENOID_UP = 0;
+    public static int INTAKE_SOLENOID_DOWN = 6;
+    public static int INTAKE_SOLENOID_UP = 1;
+
 }
 
 

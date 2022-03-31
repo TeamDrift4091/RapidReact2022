@@ -11,6 +11,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.IntakeIndexShooter;
@@ -26,14 +27,13 @@ public class IntakeIndexShooterCommand extends CommandBase {
   private Timer ejectContinueTimer;
   private boolean intakeIsAlreadyActive;
   private boolean intakeIsAlreadyOff;
-
   /** Creates a new IntakeIndexShooterCommand. */
   public IntakeIndexShooterCommand(IntakeIndexShooter intakeIndexShooter, BooleanSupplier intakeTrigger, BooleanSupplier shootTrigger) {
     addRequirements(intakeIndexShooter);
     this.intakeIndexShooter = intakeIndexShooter;
 
     this.intakeTrigger = intakeTrigger;
-    this.shootTrigger = shootTrigger;
+    this.shootTrigger = shootTrigger; 
 
     this.intakeDelayTimer = new Timer();
     this.intakeContinueTimer = new Timer();
@@ -72,12 +72,17 @@ public class IntakeIndexShooterCommand extends CommandBase {
       }
       if (velocity != -1) {
         intakeIndexShooter.setShooterSpeed(velocity);
-        intakeIndexShooter.setTopIndexSpeed(.6);
+        intakeIndexShooter.setTopIndexSpeed(.5);
+        intakeIndexShooter.setBottomIndexSpeed(0.3);
+      } else {
+        intakeIndexShooter.setShooterSpeed(1);
+        intakeIndexShooter.setTopIndexSpeed(.5);
+        intakeIndexShooter.setBottomIndexSpeed(0.3);
       }
     // Eject wrong color
     } else if (!intakeIndexShooter.isCorrectColor()) {
       intakeIndexShooter.setShooterSpeed(.6);
-      intakeIndexShooter.setTopIndexSpeed(.6);
+      intakeIndexShooter.setTopIndexSpeed(.5);
       ejectContinueTimer.reset();
       ejectContinueTimer.start();
     // Do nothing
@@ -88,6 +93,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
     }
 
     // Intake
+    SmartDashboard.putNumber("timerforintakr", intakeDelayTimer.get());
     if (shouldIntake && !(bottomSlotContainsBall && topSlotContainsBall)) {
       // initialize
       if (!intakeIsAlreadyActive) {
@@ -100,7 +106,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
       }
       // execute
       if(intakeDelayTimer.hasElapsed(0.5)){
-        intakeIndexShooter.setIntakeSpeed(-0.5); // Motor must be reversed
+        intakeIndexShooter.setIntakeSpeed(-0.3); // Motor must be reversed
 
         // Only runs until the bottomSlot is full because of the outermost if statement
         intakeIndexShooter.setBottomIndexSpeed(.6);

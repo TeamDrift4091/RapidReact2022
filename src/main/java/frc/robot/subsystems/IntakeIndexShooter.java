@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -54,6 +55,13 @@ public class IntakeIndexShooter extends SubsystemBase {
     colorMatcher.addColorMatch(blue);
     colorMatcher.setConfidenceThreshold(.75); // Default .95
 
+    //REVERSING INTAKE AND SHOOTER
+    intakeMotor.setInverted(true);
+    shooterMotor.setInverted(true);
+
+    // SHOOTER
+    shooterMotor.setNeutralMode(NeutralMode.Coast);
+
     // INTAKE
     intakeMotor.setNeutralMode(NeutralMode.Brake);
     intakeSolenoid.set(Value.kReverse); 
@@ -64,7 +72,11 @@ public class IntakeIndexShooter extends SubsystemBase {
    * @param speed percent output from -1 to 1
    */
   public void setShooterSpeed(double speed){
-    shooterMotor.set(speed);
+    shooterMotor.set(-speed);
+  }
+
+  public double getShooterSpeed(){
+    return shooterMotor.getSelectedSensorVelocity();
   }
 
   /**
@@ -75,6 +87,10 @@ public class IntakeIndexShooter extends SubsystemBase {
     topIndexMotor.set(speed);
   }
 
+  public double getTopIndexSpeed(){
+    return topIndexMotor.getSelectedSensorVelocity();
+  }
+
   /**
    * Sets the speed of the bottom index motor
    * @param speed percent output from -1 to 1
@@ -83,12 +99,16 @@ public class IntakeIndexShooter extends SubsystemBase {
     bottomIndexMotor.set(speed);
   }
 
+  public double getBotomIndexSpeed(){
+    return bottomIndexMotor.getSelectedSensorVelocity();
+  }
+
   /**
    * Sets the speed of the intake motor.
    * @param speed percent output from -1 and 1 
    */
   public void setIntakeSpeed(double speed){
-    intakeMotor.set(speed);
+    intakeMotor.set(-speed);
   }
 
   /**

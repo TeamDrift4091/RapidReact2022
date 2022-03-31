@@ -15,6 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.autonomous.Autonomous1Ball;
 import frc.robot.commands.autonomous.Autonomous2Ball;
 import frc.robot.commands.climber.LowerClimber;
@@ -24,6 +25,7 @@ import frc.robot.commands.drivetrain.TargetTrackingClockwiseBias;
 import frc.robot.commands.drivetrain.TargetTrackingCounterClockwiseBias;
 import frc.robot.commands.drivetrain.TargetTrackingDistance;
 import frc.robot.commands.intakeindexshooter.IntakeIndexShooterCommand;
+import frc.robot.commands.intakeindexshooter.Shoot;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -39,9 +41,12 @@ public class RobotContainer {
 
   // Controller buttons
   JoystickButton controllerAButton = new JoystickButton(controller, 1);
+  JoystickButton controllerBButton = new JoystickButton(controller, 2);
+  JoystickButton controllerXButton = new JoystickButton(controller, 3);
   JoystickButton controllerYButton = new JoystickButton(controller, 4);
   JoystickButton controllerLeftBumper = new JoystickButton(controller, 5);
   JoystickButton controllerRightBumper = new JoystickButton(controller, 6);
+  JoystickButton shooterButton = new JoystickButton(controller, 3);
 
 
   // The robot's subsystems and commands are defined here...
@@ -72,18 +77,19 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
       () -> controller.getLeftY() * -1 * .6, // -Y is forward on the joystick
-      () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX()) * .6
+      () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX()) * .5
     ));
-    // controllerRightBumper.whenHeld(new TargetTrackingClockwiseBias(drivetrain));
-    controllerRightBumper.whenHeld(new SequentialCommandGroup(
-      new TargetTrackingClockwiseBias(drivetrain),
-      new TargetTrackingDistance(drivetrain)
-    ));
-    // controllerLeftBumper.whenHeld(new TargetTrackingCounterClockwiseBias(drivetrain));
-    controllerLeftBumper.whenHeld(new SequentialCommandGroup(
-      new TargetTrackingCounterClockwiseBias(drivetrain),
-      new TargetTrackingDistance(drivetrain)
-    ));
+    controllerRightBumper.whenHeld(new TargetTrackingClockwiseBias(drivetrain));
+    // controllerRightBumper.whenHeld(new SequentialCommandGroup(
+    //   new TargetTrackingClockwiseBias(drivetrain),
+    //   new TargetTrackingDistance(drivetrain)
+    // ));
+    controllerLeftBumper.whenHeld(new TargetTrackingCounterClockwiseBias(drivetrain));
+    // controllerLeftBumper.whenHeld(new SequentialCommandGroup(
+    //   new TargetTrackingCounterClockwiseBias(drivetrain),
+    //   new TargetTrackingDistance(drivetrain)
+    // ));
+    controllerXButton.whenHeld(new TargetTrackingDistance(drivetrain));
 
     // INTAKE INDEX SHOOTER
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
@@ -97,12 +103,17 @@ public class RobotContainer {
     // CLIMBER
     controllerAButton.whenHeld(new LowerClimber(climber));
     controllerYButton.whenHeld(new RaiseClimber(climber));
+
+    //controllerBButton.whileHeld(new InstantCommand(() -> {intakeIndexShooter.setShooterSpeed(-.6);}, intakeIndexShooter));
+    shooterButton.whenHeld(new Shoot(intakeIndexShooter));
+
+    //controllerXButton.whileHeld(new InstantCommand(() -> {intakeIndexShooter.setIntakeSpeed(.4);}, intakeIndexShooter));
   }
 
   /**
    * Use this method to create {@link SendableChooser}s and initialize them properly.
    */
-  private void initializeChoosers() {
+  private void initializeChoosers() {   
     autonomousChooser.setDefaultOption("2 Ball", new Autonomous2Ball(drivetrain, intakeIndexShooter));
     autonomousChooser.addOption("1 Ball", new Autonomous1Ball(drivetrain, intakeIndexShooter));
 
