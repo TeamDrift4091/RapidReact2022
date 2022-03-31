@@ -36,7 +36,7 @@ public class JoystickDrive extends CommandBase {
   public void execute() {
     double updatedY = joyY.getAsDouble();
     double updatedX = joyX.getAsDouble();
-    drivetrain.curvatureDrive(updatedY, updatedX, false);
+    drivetrain.arcadeDrive(updatedY, updatedX, true);
   }
 
   // Called once the command ends or is interrupted.

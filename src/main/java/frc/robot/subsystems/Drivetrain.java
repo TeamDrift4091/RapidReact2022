@@ -46,11 +46,6 @@ public class Drivetrain extends SubsystemBase {
     frontRight = new WPI_TalonFX(Constants.FRONT_RIGHT_PORT);
     backRight = new WPI_TalonFX(Constants.BACK_RIGHT_PORT);
 
-    frontLeft.configFactoryDefault();
-    backLeft.configFactoryDefault();
-    frontRight.configFactoryDefault();
-    backRight.configFactoryDefault();
-
     differentialDrive = new DifferentialDrive(frontLeft, frontRight);
     differentialDrive.setSafetyEnabled(false);
 
@@ -109,10 +104,6 @@ public class Drivetrain extends SubsystemBase {
    */
   public void arcadeDrive(double speed, double rotation, boolean squareInputs) {
     differentialDrive.arcadeDrive(speed, rotation, squareInputs);
-  }
-  
-  public void curvatureDrive(double speed, double steering, boolean isQuickTurn) {
-    differentialDrive.curvatureDrive(speed, steering, isQuickTurn);
   }
 
   public Pose2d getPose(){
