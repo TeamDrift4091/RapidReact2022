@@ -46,6 +46,12 @@ public class IntakeIndexShooter extends SubsystemBase {
 
   /** Creates a new IntakeIndexShooter. */
   public IntakeIndexShooter() {
+
+    shooterMotor.configFactoryDefault();
+    topIndexMotor.configFactoryDefault();
+    bottomIndexMotor.configFactoryDefault();
+    intakeMotor.configFactoryDefault();
+    
     // COLOR SENSOR
     red = new Color(1, .5, .5);
     blue = new Color(.5, .5, 1);

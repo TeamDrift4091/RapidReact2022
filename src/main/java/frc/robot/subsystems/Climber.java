@@ -12,9 +12,11 @@ import frc.robot.Constants;
 public class Climber extends SubsystemBase {
   /** Creates a new Climber. */
   
-  WPI_TalonSRX winchMotor = new WPI_TalonSRX(Constants.WINCH_MOTOR);
+  WPI_TalonSRX winchMotor;
 
   public Climber() {
+    winchMotor = new WPI_TalonSRX(Constants.WINCH_MOTOR);
+    winchMotor.configFactoryDefault();
   }
 
   /**
