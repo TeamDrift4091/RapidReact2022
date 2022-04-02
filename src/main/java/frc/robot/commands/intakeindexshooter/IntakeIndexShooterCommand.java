@@ -93,7 +93,6 @@ public class IntakeIndexShooterCommand extends CommandBase {
     }
 
     // Intake
-    SmartDashboard.putNumber("timerforintakr", intakeDelayTimer.get());
     if (shouldIntake && !(bottomSlotContainsBall && topSlotContainsBall)) {
       // initialize
       if (!intakeIsAlreadyActive) {
@@ -127,7 +126,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
       intakeIndexShooter.setIntakeSpeed(0);
 
       // Advance Ball and keep motor spinning after intake retracts
-      if (!intakeContinueTimer.hasElapsed(1) || (bottomSlotContainsBall && !topSlotContainsBall)) {
+      if ((!intakeContinueTimer.hasElapsed(1) && !(bottomSlotContainsBall && topSlotContainsBall)) || (bottomSlotContainsBall && !topSlotContainsBall)) {
         intakeIndexShooter.setBottomIndexSpeed(.6);
       } else {
         intakeContinueTimer.stop();
