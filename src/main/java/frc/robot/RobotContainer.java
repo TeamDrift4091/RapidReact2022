@@ -14,8 +14,6 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeIndexShooter;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.autonomous.Autonomous1Ball;
 import frc.robot.commands.autonomous.Autonomous2Ball;
 import frc.robot.commands.climber.LowerClimber;
@@ -25,7 +23,6 @@ import frc.robot.commands.drivetrain.TargetTrackingClockwiseBias;
 import frc.robot.commands.drivetrain.TargetTrackingCounterClockwiseBias;
 import frc.robot.commands.drivetrain.TargetTrackingDistance;
 import frc.robot.commands.intakeindexshooter.IntakeIndexShooterCommand;
-import frc.robot.commands.intakeindexshooter.Shoot;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -36,8 +33,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // the controller will control the intake and climber
-  private static XboxController controller = new XboxController(1);
-  // private static PS4Controller controller = new PS4Controller(1);
+  // private static XboxController controller = new XboxController(1);
+  private static PS4Controller controller = new PS4Controller(1);
 
   // Controller buttons
   JoystickButton controllerAButton = new JoystickButton(controller, 1);
@@ -46,8 +43,6 @@ public class RobotContainer {
   JoystickButton controllerYButton = new JoystickButton(controller, 4);
   JoystickButton controllerLeftBumper = new JoystickButton(controller, 5);
   JoystickButton controllerRightBumper = new JoystickButton(controller, 6);
-  JoystickButton shooterButton = new JoystickButton(controller, 3);
-
 
   // The robot's subsystems and commands are defined here...
   private final Drivetrain drivetrain = new Drivetrain();
@@ -94,20 +89,15 @@ public class RobotContainer {
     // INTAKE INDEX SHOOTER
     intakeIndexShooter.setDefaultCommand(new IntakeIndexShooterCommand(
       intakeIndexShooter,
-      () -> controller.getLeftTriggerAxis() > .1,
-      () -> controller.getRightTriggerAxis() > .1
-      // () -> controller.getL2Axis() > .1,
-      // () -> controller.getR2Axis() > .1
+      // () -> controller.getLeftTriggerAxis() > .1,
+      // () -> controller.getRightTriggerAxis() > .1
+      () -> controller.getL2Axis() > .1,
+      () -> controller.getR2Axis() > .1
     ));
 
     // CLIMBER
     controllerAButton.whenHeld(new LowerClimber(climber));
     controllerYButton.whenHeld(new RaiseClimber(climber));
-
-    //controllerBButton.whileHeld(new InstantCommand(() -> {intakeIndexShooter.setShooterSpeed(-.6);}, intakeIndexShooter));
-    shooterButton.whenHeld(new Shoot(intakeIndexShooter));
-
-    //controllerXButton.whileHeld(new InstantCommand(() -> {intakeIndexShooter.setIntakeSpeed(.4);}, intakeIndexShooter));
   }
 
   /**

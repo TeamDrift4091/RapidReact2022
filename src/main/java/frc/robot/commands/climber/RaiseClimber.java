@@ -34,7 +34,6 @@ public class RaiseClimber extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // TODO: Potentially use when motor is reaching its physical limits
     return false;
   }
 }

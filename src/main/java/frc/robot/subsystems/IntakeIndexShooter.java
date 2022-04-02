@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.ColorMatch;
 import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
@@ -23,6 +22,7 @@ import frc.robot.Constants;
 
 public class IntakeIndexShooter extends SubsystemBase {
   // MOTORS
+  // TODO: Should some of these be TalonSRX?
   private WPI_TalonFX shooterMotor = new WPI_TalonFX(Constants.SHOOTER_MOTOR);
   private WPI_TalonFX topIndexMotor = new WPI_TalonFX(Constants.TOP_INDEX_MOTOR);
   private WPI_TalonFX bottomIndexMotor = new WPI_TalonFX(Constants.BOTTOM_INDEX_MOTOR);
@@ -47,6 +47,11 @@ public class IntakeIndexShooter extends SubsystemBase {
 
   /** Creates a new IntakeIndexShooter. */
   public IntakeIndexShooter() {
+    shooterMotor.configFactoryDefault();
+    topIndexMotor.configFactoryDefault();
+    bottomIndexMotor.configFactoryDefault();
+    intakeMotor.configFactoryDefault();
+
     // COLOR SENSOR
     red = new Color(1, .5, .5);
     blue = new Color(.5, .5, 1);

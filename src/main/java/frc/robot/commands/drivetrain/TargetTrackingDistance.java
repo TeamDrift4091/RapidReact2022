@@ -15,9 +15,6 @@ import frc.robot.subsystems.Drivetrain;
 
 public class TargetTrackingDistance extends CommandBase {
   private Drivetrain drivetrain;
-
-  NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-  NetworkTableEntry tx = limelightTable.getEntry("tx");
   
   /** Creates a new TargetTrackingDistance. */
   public TargetTrackingDistance(Drivetrain drivetrain) {
@@ -45,6 +42,9 @@ public class TargetTrackingDistance extends CommandBase {
   @Override
   public boolean isFinished() {
     // Second to last element in list is the furthest it can be.
-    return tx.getDouble(0) < Constants.DISTANCE_TO_POWER.get(Constants.DISTANCE_TO_POWER.size()-2).getFirst();
+    NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry ty = limelightTable.getEntry("ty");
+    double verticalAngle = ty.getDouble(0);
+    return verticalAngle < Constants.DISTANCE_TO_POWER.get(Constants.DISTANCE_TO_POWER.size()-2).getFirst() && verticalAngle != 0;
   }
 }

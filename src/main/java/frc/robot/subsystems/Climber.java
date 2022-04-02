@@ -18,6 +18,7 @@ public class Climber extends SubsystemBase {
   DigitalInput limitSwitch = new DigitalInput(1);
 
   public Climber() {
+    winchMotor.configFactoryDefault();
     winchMotor.setNeutralMode(NeutralMode.Brake);
     winchMotor.setSelectedSensorPosition(0);
   }

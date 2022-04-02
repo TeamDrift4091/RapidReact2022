@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -21,7 +20,6 @@ public class TargetTrackingClockwiseBias extends CommandBase {
   private int inThreshold;
   /** Creates a new BallTracking. */
   public TargetTrackingClockwiseBias(Drivetrain drivetrain) {
-    // Use addRequirements() here to declare subsystem dependencies.
     this.drivetrain = drivetrain;
     addRequirements(drivetrain);
     controller = new PIDController(Constants.TARGET_TRACKING_P, Constants.TARGET_TRACKING_I, 0);
@@ -44,8 +42,6 @@ public class TargetTrackingClockwiseBias extends CommandBase {
     if(horizontalAngle == 0){
       drivetrain.arcadeDrive(0, .2, false);
     } else {
-      // steeringAdjustment = Constants.TARGET_TRACKING_P * Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle);
-      // drivetrain.arcadeDrive(0, steeringAdjustment, false);
       drivetrain.arcadeDrive(0, controller.calculate(0, Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle)), false);
     }
   }
@@ -59,24 +55,12 @@ public class TargetTrackingClockwiseBias extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    SmartDashboard.putNumber("horizontalAngle", horizontalAngle);
-    
-    // TODO: Find lower and upper limit of range
-    NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry ty = limelightTable.getEntry("ty");
-    double verticalAngle = ty.getDouble(0);
-    SmartDashboard.putBoolean("Target In Range", verticalAngle != 0);
-    // SmartDashboard.putBoolean("Target In Range", .1 < verticalAngle && verticalAngle < 2);
-
-    SmartDashboard.putNumber("inThreshold", inThreshold);
-    
-    // TODO: This doesn't seem to be working.  But is it necessary?
+  public boolean isFinished() {    
     if (Math.abs(horizontalAngle) < threshold && horizontalAngle != 0) {
       inThreshold++;
     } else {
       threshold = 0;
     }
-    return inThreshold > 100;
+    return inThreshold > 50;
   }
 }

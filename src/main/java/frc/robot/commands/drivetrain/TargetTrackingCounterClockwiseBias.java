@@ -8,7 +8,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -43,8 +42,6 @@ public class TargetTrackingCounterClockwiseBias extends CommandBase {
     if(horizontalAngle == 0){
       drivetrain.arcadeDrive(0, -.2, false);
     } else {
-      // steeringAdjustment = Constants.TARGET_TRACKING_P * Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle);
-      // drivetrain.arcadeDrive(0, steeringAdjustment, false);
       drivetrain.arcadeDrive(0, controller.calculate(0, Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle)), false);
     }
   }
@@ -58,13 +55,11 @@ public class TargetTrackingCounterClockwiseBias extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putNumber("horizontalAngle", horizontalAngle);
-    
     if (Math.abs(horizontalAngle) < threshold && horizontalAngle != 0) {
       inThreshold++;
     } else {
       threshold = 0;
     }
-    return inThreshold > 100;
+    return inThreshold > 50;
   }
 }
