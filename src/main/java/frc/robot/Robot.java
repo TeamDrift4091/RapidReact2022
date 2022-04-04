@@ -56,6 +56,9 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    // At the beginning of a competition match, we check the color of the robot set by the field.
+    m_robotContainer.updateAllianceColor();
+    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
@@ -70,6 +73,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
+    // When the robot is enabled, the color is checked.
+    m_robotContainer.updateAllianceColor();
+
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -85,6 +91,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testInit() {
+    // When the robot is enabled, the color is checked.
+    m_robotContainer.updateAllianceColor();
+
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
