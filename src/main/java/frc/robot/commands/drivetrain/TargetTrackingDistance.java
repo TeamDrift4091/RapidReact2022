@@ -9,6 +9,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
@@ -20,6 +21,7 @@ public class TargetTrackingDistance extends CommandBase {
   public TargetTrackingDistance(Drivetrain drivetrain) {
     addRequirements(drivetrain);
     this.drivetrain = drivetrain;
+    SmartDashboard.putNumber("TargetDistance", 1);
   }
 
   // Called when the command is initially scheduled.
@@ -44,7 +46,6 @@ public class TargetTrackingDistance extends CommandBase {
     // Second to last element in list is the furthest it can be.
     NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry ty = limelightTable.getEntry("ty");
-    double verticalAngle = ty.getDouble(0);
-    return verticalAngle < Constants.DISTANCE_TO_POWER.get(Constants.DISTANCE_TO_POWER.size()-2).getFirst() && verticalAngle != 0;
+    return (ty.getDouble(0) > Constants.DISTANCE_TO_POWER.get(Constants.DISTANCE_TO_POWER.size()-2).getFirst()) || ty.getDouble(0) == 0;
   }
 }

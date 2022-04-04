@@ -61,8 +61,6 @@ public final class Constants {
         new Pair<>(13.30, 1.),
         new Pair<>(10.50, 1.0),
         new Pair<>(8.5, 1.0),
-        new Pair<>(8.5, 1.0),
-        // TODO: ....
         new Pair<>(0.0, -1.0)
       );
 
