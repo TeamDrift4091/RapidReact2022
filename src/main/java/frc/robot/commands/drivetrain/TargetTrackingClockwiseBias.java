@@ -40,7 +40,7 @@ public class TargetTrackingClockwiseBias extends CommandBase {
     horizontalAngle = tx.getDouble(0);
 
     if(horizontalAngle == 0){
-      drivetrain.arcadeDrive(0, .2, false);
+      drivetrain.arcadeDrive(0, .15, false);
     } else {
       drivetrain.arcadeDrive(0, controller.calculate(0, Math.sqrt(Math.abs(horizontalAngle)) * Math.signum(horizontalAngle)), false);
     }

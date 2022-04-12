@@ -36,7 +36,7 @@ public class Autonomous1Ball extends SequentialCommandGroup {
           new Pose2d(0,0, Rotation2d.fromDegrees(0)),
           List.of(
           ),
-          new Pose2d(-5, 0, Rotation2d.fromDegrees(0)),
+          new Pose2d(-2, 0, Rotation2d.fromDegrees(0)),
           // *********
           new TrajectoryConfig(
             Units.feetToMeters(4.5),
@@ -48,7 +48,6 @@ public class Autonomous1Ball extends SequentialCommandGroup {
           ).setReversed(true)
         )
       ),
-      new TargetTrackingClockwiseBias(drivetrain).withTimeout(2.5),
       new Shoot(intakeIndexShooter),
       new AutonomousTrajectory(
         drivetrain,

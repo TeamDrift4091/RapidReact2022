@@ -38,7 +38,7 @@ public class Autonomous2Ball extends SequentialCommandGroup {
           new Pose2d(0,0, Rotation2d.fromDegrees(0)),
           List.of(
           ),
-          new Pose2d(3, 0, Rotation2d.fromDegrees(0)),
+          new Pose2d(1, 0, Rotation2d.fromDegrees(0)),
           // *********
           new TrajectoryConfig(
             Units.feetToMeters(4.5),
@@ -52,7 +52,7 @@ public class Autonomous2Ball extends SequentialCommandGroup {
       ),
       new ParallelCommandGroup(
         new IntakeBall(intakeIndexShooter),
-        new AutonomousMotionMagic(drivetrain, 80)
+        new AutonomousMotionMagic(drivetrain, 100)
       ),
       //new InstantCommand(() -> {intakeIndexShooter.setBottomIndexSpeed(.5);}, intakeIndexShooter).withTimeout(.5),
       new TargetTrackingClockwiseBias(drivetrain).withTimeout(2.5),

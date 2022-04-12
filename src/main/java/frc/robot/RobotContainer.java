@@ -70,8 +70,8 @@ public class RobotContainer {
     // DRIVETRAIN
     drivetrain.setDefaultCommand(new JoystickDrive(
       drivetrain,
-      () -> controller.getLeftY() * -1 * .6, // -Y is forward on the joystick
-      () -> controller.getRightX() * controller.getRightX() * Math.signum(controller.getRightX()) * .5
+      () -> controller.getLeftY() * -1 * .7, // -Y is forward on the joystick
+      () -> controller.getRightX() * .5
     ));
     controllerRightBumper.whenHeld(new TargetTrackingClockwiseBias(drivetrain));
     // controllerRightBumper.whenHeld(new SequentialCommandGroup(
@@ -103,8 +103,8 @@ public class RobotContainer {
    * Use this method to create {@link SendableChooser}s and initialize them properly.
    */
   private void initializeChoosers() {   
-    autonomousChooser.setDefaultOption("2 Ball", new Autonomous2Ball(drivetrain, intakeIndexShooter));
-    autonomousChooser.addOption("1 Ball", new Autonomous1Ball(drivetrain, intakeIndexShooter));
+    autonomousChooser.setDefaultOption("1 Ball", new Autonomous1Ball(drivetrain, intakeIndexShooter));
+    autonomousChooser.addOption("2 Ball", new Autonomous2Ball(drivetrain, intakeIndexShooter));
 
     SmartDashboard.putData("Autonomous Chooser", autonomousChooser);
   }

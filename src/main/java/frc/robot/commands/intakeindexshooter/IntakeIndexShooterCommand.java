@@ -24,8 +24,10 @@ public class IntakeIndexShooterCommand extends CommandBase {
   private Timer intakeDelayTimer;
   private Timer intakeContinueTimer;
   private Timer ejectContinueTimer;
+  private Timer shootDelayTimer;
   private boolean intakeIsAlreadyActive;
   private boolean intakeIsAlreadyOff;
+  private boolean isShooting;
   /** Creates a new IntakeIndexShooterCommand. */
   public IntakeIndexShooterCommand(IntakeIndexShooter intakeIndexShooter, BooleanSupplier intakeTrigger, BooleanSupplier shootTrigger) {
     addRequirements(intakeIndexShooter);
@@ -37,6 +39,7 @@ public class IntakeIndexShooterCommand extends CommandBase {
     this.intakeDelayTimer = new Timer();
     this.intakeContinueTimer = new Timer();
     this.ejectContinueTimer = new Timer();
+    this.shootDelayTimer = new Timer();
     this.intakeIsAlreadyActive = false;
     this.intakeIsAlreadyOff = false;
   }
@@ -57,6 +60,11 @@ public class IntakeIndexShooterCommand extends CommandBase {
 
     // Shoot
     if (shouldShoot) {
+      if (!isShooting) {
+        shootDelayTimer.reset();
+        shootDelayTimer.start();
+        isShooting = true;
+      }
       // TODO: Should the robot shoot if the limelight can't see the target?
       NetworkTable limelightTable = NetworkTableInstance.getDefault().getTable("limelight");
       NetworkTableEntry ty = limelightTable.getEntry("ty");
@@ -71,17 +79,20 @@ public class IntakeIndexShooterCommand extends CommandBase {
       }
       if (velocity != -1) {
         intakeIndexShooter.setShooterSpeed(velocity);
-        intakeIndexShooter.setTopIndexSpeed(.5);
-        intakeIndexShooter.setBottomIndexSpeed(0.3);
+        intakeIndexShooter.setTopIndexSpeed(.6);
+        intakeIndexShooter.setBottomIndexSpeed(0.7);
       } else {
         intakeIndexShooter.setShooterSpeed(1);
-        intakeIndexShooter.setTopIndexSpeed(.5);
-        intakeIndexShooter.setBottomIndexSpeed(0.3);
+        if (shootDelayTimer.hasElapsed(.2)) {
+          intakeIndexShooter.setTopIndexSpeed(.6);
+          intakeIndexShooter.setBottomIndexSpeed(0.9);
+        }
       }
     // Eject wrong color
     } else if (!intakeIndexShooter.isCorrectColor()) {
       intakeIndexShooter.setShooterSpeed(.6);
-      intakeIndexShooter.setTopIndexSpeed(.5);
+      intakeIndexShooter.setTopIndexSpeed(.6);
+      intakeIndexShooter.setBottomIndexSpeed(0.7);
       ejectContinueTimer.reset();
       ejectContinueTimer.start();
     // Do nothing
@@ -89,6 +100,8 @@ public class IntakeIndexShooterCommand extends CommandBase {
       ejectContinueTimer.stop();
       intakeIndexShooter.setShooterSpeed(0);
       intakeIndexShooter.setTopIndexSpeed(0);
+      shootDelayTimer.stop();
+      isShooting = false;
     }
 
     // Intake
@@ -104,10 +117,10 @@ public class IntakeIndexShooterCommand extends CommandBase {
       }
       // execute
       if(intakeDelayTimer.hasElapsed(0.5)){
-        intakeIndexShooter.setIntakeSpeed(-0.3); // Motor must be reversed
+        intakeIndexShooter.setIntakeSpeed(-0.45); // Motor must be reversed
 
         // Only runs until the bottomSlot is full because of the outermost if statement
-        intakeIndexShooter.setBottomIndexSpeed(.6);
+        intakeIndexShooter.setBottomIndexSpeed(.7);
       } else {
         intakeContinueTimer.stop();
       }
@@ -125,11 +138,15 @@ public class IntakeIndexShooterCommand extends CommandBase {
       intakeIndexShooter.setIntakeSpeed(0);
 
       // Advance Ball and keep motor spinning after intake retracts
-      if ((!intakeContinueTimer.hasElapsed(1) && !(bottomSlotContainsBall && topSlotContainsBall)) || (bottomSlotContainsBall && !topSlotContainsBall)) {
-        intakeIndexShooter.setBottomIndexSpeed(.6);
+      if (((!intakeContinueTimer.hasElapsed(0.75)) || (!intakeContinueTimer.hasElapsed(1.5) && !(topSlotContainsBall)) || (bottomSlotContainsBall && !topSlotContainsBall)) && !(bottomSlotContainsBall && topSlotContainsBall)) {
+        intakeIndexShooter.setBottomIndexSpeed(.7);
       } else {
-        intakeContinueTimer.stop();
-        intakeIndexShooter.setBottomIndexSpeed(0);
+        if (intakeContinueTimer.hasElapsed(1.5)) {
+          intakeContinueTimer.stop();
+        }
+        if (!shouldShoot) {
+          intakeIndexShooter.setBottomIndexSpeed(0);
+        }
       }
     }
   }

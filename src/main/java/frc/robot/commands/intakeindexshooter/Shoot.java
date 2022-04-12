@@ -52,12 +52,14 @@ public class Shoot extends CommandBase {
     if (velocity != -1) {
       intakeIndexShooter.setShooterSpeed(velocity);
       if(topIndexDelay.hasElapsed(1)){
-        intakeIndexShooter.setTopIndexSpeed(.5);
+        intakeIndexShooter.setTopIndexSpeed(.8);
         intakeIndexShooter.setBottomIndexSpeed(.4);
       }
     } else {
-      intakeIndexShooter.setShooterSpeed(.8);
-      intakeIndexShooter.setTopIndexSpeed(.5);
+      intakeIndexShooter.setShooterSpeed(1);
+      intakeIndexShooter.setTopIndexSpeed(.8);
+      intakeIndexShooter.setBottomIndexSpeed(0.6);
+
     }
 
     SmartDashboard.putNumber("Shooter Velocity", intakeIndexShooter.getShooterSpeed());
